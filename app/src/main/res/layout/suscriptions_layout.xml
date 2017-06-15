@@ -9,4 +9,12 @@
         android:layout_height="wrap_content"
         android:text="Suscripciones"
         android:textSize="32sp" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"/>
+
 </LinearLayout>
