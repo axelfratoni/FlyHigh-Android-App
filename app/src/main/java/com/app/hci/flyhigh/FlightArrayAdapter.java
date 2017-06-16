@@ -22,6 +22,9 @@ import static android.graphics.Color.rgb;
  */
 
 public class FlightArrayAdapter extends ArrayAdapter<Flight> {
+    // Hay que ver como mover estos colores al archivo de colors.xml,
+    // pero si subis un hexa al xml, se guarda como int y al parsecolor de Color
+    // le tenes que pasar un string.
     private String ORANGE = "#FF8811";
     private String LIGHTBLUE = "#4EB2ED";
     private String GREEN = "#01A001";
