@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="flight_intent" >
+        <item>airline_id</item>
+        <item>departure_airport</item>
+        <item>departure_airport_info</item>
+        <item>departure_hour</item>
+        <item>arrival_airport</item>
+        <item>arrival_airport_info</item>
+        <item>arrival_hour</item>
+        <item>flight_code</item>
+        <item>subscription_status</item>
+    </string-array>
+</resources>

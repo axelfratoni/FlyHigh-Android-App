@@ -8,6 +8,8 @@ import android.widget.TextView;
  */
 
 public class Flight {
+    private String[] intentIds = {"airline_id", "departure_airport", "departure_airport_info", "departure_hour",
+            "arrival_airport", "arrival_airport_info", "arrival_hour", "flight_code", "flight_date", "subscription_status"};
     private String airline;
     private String flightCode;
     private Double price;
@@ -50,6 +52,8 @@ public class Flight {
         return days;
     }
 
+    public String getDate() { return flightDate; }
+
     public String getFlightCode() {
         return flightCode;
     }
@@ -57,4 +61,6 @@ public class Flight {
     public Double getPrice() {
         return price;
     }
+
+    public String[] getIntentIds() { return intentIds; }
 }
