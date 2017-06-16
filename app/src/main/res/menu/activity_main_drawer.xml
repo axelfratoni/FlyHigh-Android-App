@@ -5,14 +5,18 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Pagina principal" />
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Búsqueda" />
         <item
             android:id="@+id/nav_suscriptions"
-            android:icon="@drawable/ic_view_list_black_24dp"
+            android:icon="@drawable/ic_favorite_black_24dp"
             android:title="Suscripciones" />
         <item
             android:id="@+id/nav_offers"
-            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:icon="@drawable/ic_local_offer_black_24dp"
             android:title="Ofertas" />
         <item
             android:id="@+id/nav_history"

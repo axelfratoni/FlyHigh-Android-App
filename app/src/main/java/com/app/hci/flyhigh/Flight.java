@@ -18,12 +18,12 @@ public class Flight {
     private String status;
     private boolean[] days;
 
-    public Flight(String airline, String flightCode, String originAirport, String destinationAirport, Double price){
+    public Flight(String airline, String flightCode, Double price){
         this.airline = airline;
         this.flightCode = flightCode;
         this.price = price;
-        this.originAirport = originAirport;
-        this.destinationAirport = destinationAirport;
+        //this.originAirport = originAirport;
+        //this.destinationAirport = destinationAirport;
     }
 
     public String getAirline() {

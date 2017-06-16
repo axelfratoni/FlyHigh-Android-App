@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new OffersFragment();
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
+        } else if (id == R.id.nav_search) {
+            fragment = new SearchFragment();
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
