@@ -3,10 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/lawea"
-        android:layout_width="match_parent"
+    <EditText android:id="@+id/search_input"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Busqueda"
-        android:textSize="32dp" />
+        android:hint="@string/search_text"
+        android:inputType="text"/>
+    <TextView
+        android:id="@+id/textsearch"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="asdasd"/>
 </LinearLayout>
