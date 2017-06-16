@@ -20,9 +20,9 @@ public class SubscriptionsFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Flight[] values = new Flight[] {
-                new Flight("Aerolineas Argentinas", "AR1005", 1534.5),
-                new Flight("Emirates", "AR12346", 12345.54),
-                new Flight("LAN", "AR923002", 789001.4)
+                new Flight("AA", "EZE", "JFK", "21.00", "07.30", "AR1005", "12/06", "Activo"),
+                new Flight("LAN", "EZE", "OLA", "10.00", "20.00", "AR12346", "13/06", "Demorado"),
+                new Flight("TAM", "EZE", "ASS", "11.15", "15.30", "AR923002", "14/06", "Volando")
         };
         FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
 

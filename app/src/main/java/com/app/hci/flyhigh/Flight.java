@@ -11,40 +11,36 @@ public class Flight {
     private String airline;
     private String flightCode;
     private Double price;
-    private String originDate;
-    private String originAirport;
-    private String destinationDate;
-    private String destinationAirport;
+    private String departureHour;
+    private String departureAirport;
+    private String arrivalHour;
+    private String arrivalAirport;
     private String status;
+    private String flightDate;
     private boolean[] days;
 
-    public Flight(String airline, String flightCode, Double price){
+    public Flight(String airline, String departureAirport, String arrivalAirport, String departureHour, String arrivalHour,  String flightCode, String flightDate, String status){
         this.airline = airline;
         this.flightCode = flightCode;
-        this.price = price;
-        //this.originAirport = originAirport;
-        //this.destinationAirport = destinationAirport;
+        this.status = status;
+        this.flightDate = flightDate;
+        this.departureHour = departureHour;
+        this.arrivalHour = arrivalHour;
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
     }
 
     public String getAirline() {
         return airline;
     }
 
-    public String getOriginDate() {
-        return originDate;
-    }
+    public String getDepartureHour(){ return departureHour; }
 
-    public String getOriginAirport() {
-        return originAirport;
-    }
+    public String getDepartureAirport(){ return departureAirport; }
 
-    public String getDestinationDate() {
-        return destinationDate;
-    }
+    public String getArrivalHour(){ return arrivalHour; }
 
-    public String getDestinationAirport() {
-        return destinationAirport;
-    }
+    public String getArrivalAirport(){ return arrivalAirport; }
 
     public String getStatus() {
         return status;
