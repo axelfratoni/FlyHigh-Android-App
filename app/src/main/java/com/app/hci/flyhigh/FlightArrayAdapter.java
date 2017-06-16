@@ -4,6 +4,7 @@ package com.app.hci.flyhigh;
 import android.app.Activity;
 import android.drm.ProcessedData;
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -21,6 +22,10 @@ import static android.graphics.Color.rgb;
  */
 
 public class FlightArrayAdapter extends ArrayAdapter<Flight> {
+    private String ORANGE = "#FF8811";
+    private String LIGHTBLUE = "#4EB2ED";
+    private String GREEN = "#01A001";
+
     public FlightArrayAdapter(Activity context, Flight[] objects){
         super(context, R.layout.list_view_flight, objects);
     }
@@ -58,13 +63,13 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         String status = flight.getStatus();
         switch(status){
             case "Activo":
-                holder.statusTextView.setTextColor(Color.GREEN);
+                holder.statusTextView.setTextColor(Color.parseColor(GREEN));
                 break;
             case "Demorado":
-                holder.statusTextView.setTextColor(Color.rgb(255, 119, 0));
+                holder.statusTextView.setTextColor(Color.parseColor(ORANGE));
                 break;
             case "Volando":
-                holder.statusTextView.setTextColor(Color.rgb(106, 198, 252));
+                holder.statusTextView.setTextColor(Color.parseColor(LIGHTBLUE));
                 break;
             case "Cancelado":
                 holder.statusTextView.setTextColor(Color.RED);
