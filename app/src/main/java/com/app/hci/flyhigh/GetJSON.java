@@ -14,15 +14,14 @@ import java.net.URL;
  * Created by axel on 16/06/17.
  */
 
-public class HttpGetTask extends AsyncTask<Void, Void, String> {
+public class GetJSON {
     String targerURL;
 
-    public HttpGetTask(String url) {
+    public GetJSON(String url) {
         this.targerURL = url;
     }
 
-    @Override
-    protected String doInBackground(Void... params) {
+    protected String get() {
 
         HttpURLConnection urlConnection = null;
 

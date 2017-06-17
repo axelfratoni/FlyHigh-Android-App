@@ -1,23 +1,17 @@
 package com.app.hci.flyhigh;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.ArrayList;
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 
 /**
  * Created by axel on 15/06/17.
@@ -34,30 +28,38 @@ public class SearchFragment extends Fragment {
 
         view =  inflater.inflate(R.layout.search_layout, container, false);
         resultTextView = (TextView) view.findViewById(R.id.textsearch);
-        resultTextView.setText(getDeals());
-
+        new infoRetriever().execute();
         return view;
     }
 
-    private String getDeals(){
-        String result = "";
-        try {
-            String json = new HttpGetTask("http://hci.it.itba.edu.ar/v1/api/booking.groovy?method=getlastminuteflightdeals&from=BUE").execute().get();
-            JSONObject obj = new JSONObject(json);
-            JSONArray deals = obj.getJSONArray("deals");
+    public void setText(String text) {
+        resultTextView.setText(text);
+    }
 
-            for (int i = 0; i < deals.length(); i++) {
-                try {
+    private class infoRetriever extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String result = "";
+            try {
+                String json = new GetJSON("http://hci.it.itba.edu.ar/v1/api/booking.groovy?method=getlastminuteflightdeals&from=BUE").get();
+                JSONObject obj = new JSONObject(json);
+                JSONArray deals = obj.getJSONArray("deals");
+
+                for (int i = 0; i < deals.length(); i++) {
                     JSONObject d = deals.getJSONObject(i);
                     JSONObject city = d.getJSONObject("city");
                     result += city.getString("name") + "\n";
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+            return  result;
         }
-        return  result;
+
+        @Override
+        protected void onPostExecute(String result) {
+            setText(result);
+        }
     }
 }
