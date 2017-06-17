@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.R.id.list;
@@ -23,9 +24,9 @@ public class SubscriptionsFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Flight[] values = new Flight[] {
-                new Flight("AA", "EZE", "JFK", "21.00", "07.30", "AR1005", "12/06", "Activo"),
-                new Flight("LAN", "EZE", "OLA", "10.00", "20.00", "AR12346", "13/06", "Demorado"),
-                new Flight("TAM", "EZE", "ASS", "11.15", "15.30", "AR923002", "14/06", "Volando")
+                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "12/06", "Activo"),
+                new Flight("EZE", "MIA", "Buenos Aires", "Miami", "10h5m", "LAN", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional de Miami", "159101", "12/06", "Demorado"),
+                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "12/06", "Cancelado"),
         };
         FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
 
@@ -41,15 +42,19 @@ public class SubscriptionsFragment extends ListFragment {
         Intent i = new Intent(getActivity().getApplicationContext(), FlightActivity.class);
         Flight flight = (Flight) getListAdapter().getItem(position);
         String[] ids = getResources().getStringArray(R.array.flight_intent);
-        i.putExtra(ids[0],flight.getAirline());
-        i.putExtra(ids[1],flight.getDepartureAirport());
-        i.putExtra(ids[2],flight.getDepartureAirport());
-        i.putExtra(ids[3],flight.getDepartureHour());
-        i.putExtra(ids[4],flight.getArrivalAirport());
-        i.putExtra(ids[5],flight.getArrivalAirport());
-        i.putExtra(ids[6],flight.getArrivalHour());
-        i.putExtra(ids[7],flight.getFlightCode());
-        i.putExtra(ids[8],flight.getStatus());
+        i.putExtra(ids[0],flight.getDepartureAirport());
+        i.putExtra(ids[1],flight.getArrivalAirport());
+        i.putExtra(ids[2],flight.getDepartureCity());
+        i.putExtra(ids[3],flight.getArrivalCity());
+        i.putExtra(ids[4],flight.getDuration());
+        i.putExtra(ids[6],flight.getAirline());
+        i.putExtra(ids[7],flight.getWeekDays());
+        i.putExtra(ids[8],flight.getDepartureHour());
+        i.putExtra(ids[9],flight.getDepartureAirportName());
+        i.putExtra(ids[10],flight.getArrivalHour());
+        i.putExtra(ids[11],flight.getArrivalAirportName());
+        i.putExtra(ids[12],flight.getFlightNumber());
+        i.putExtra(ids[13],flight.getStatus());
         return i;
     }
     @Nullable

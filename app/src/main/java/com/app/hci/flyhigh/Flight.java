@@ -8,29 +8,40 @@ import android.widget.TextView;
  */
 
 public class Flight {
-    private String[] intentIds = {"airline_id", "departure_airport", "departure_airport_info", "departure_hour",
-            "arrival_airport", "arrival_airport_info", "arrival_hour", "flight_code", "flight_date", "subscription_status"};
-    private String airline;
-    private String flightCode;
-    private Double price;
-    private String departureHour;
     private String departureAirport;
-    private String arrivalHour;
     private String arrivalAirport;
-    private String status;
-    private String flightDate;
+    private String departureCity;
+    private String arrivalCity;
+    private String duration;
+    private ImageView airlineLogo; /// No se si lo tendria que tener el vuelo
+    private String airline;
     private boolean[] days;
+    private String departureHour;
+    private String departureAirportName;
+    private String arrivalHour;
+    private String arrivalAirportName;
+    private String flightNumber;
+    private String status;
+    private Double price;
+    private String flightDate;
 
-    public Flight(String airline, String departureAirport, String arrivalAirport, String departureHour, String arrivalHour,  String flightCode, String flightDate, String status){
+    public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airline, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
         this.airline = airline;
-        this.flightCode = flightCode;
+        this.flightNumber= flightNumber;
         this.status = status;
         this.flightDate = flightDate;
         this.departureHour = departureHour;
         this.arrivalHour = arrivalHour;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
+        this.departureCity = departureCity;
+        this.arrivalCity = arrivalCity;
+        this.duration = duration;
+        this.departureAirportName = departureAirportName;
+        this.arrivalAirportName = arrivalAirportName;
     }
+
+    public String getArrivalCity() { return arrivalCity; }
 
     public String getAirline() {
         return airline;
@@ -42,25 +53,31 @@ public class Flight {
 
     public String getArrivalHour(){ return arrivalHour; }
 
+    public String getDepartureAirportName() { return departureAirportName; }
+
+    public String getArrivalAirportName() { return arrivalAirportName; }
+
     public String getArrivalAirport(){ return arrivalAirport; }
 
     public String getStatus() {
         return status;
     }
 
-    public boolean[] getDays() {
-        return days;
+    public String getWeekDays() {
+        return "Lunes, Martes y Miercoles";
     }
 
     public String getDate() { return flightDate; }
 
-    public String getFlightCode() {
-        return flightCode;
+    public String getFlightNumber() {
+        return flightNumber;
     }
 
     public Double getPrice() {
         return price;
     }
 
-    public String[] getIntentIds() { return intentIds; }
+    public String getDuration() { return duration; }
+
+    public String getDepartureCity() { return departureCity; }
 }

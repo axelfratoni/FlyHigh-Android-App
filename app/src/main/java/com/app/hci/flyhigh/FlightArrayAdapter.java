@@ -61,7 +61,7 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         holder.airportsTextView.setText(flight.getDepartureAirport() + " -> " + flight.getArrivalAirport());
         holder.departureTextView.setText("Salida: " + flight.getDepartureHour() + "hs");
         holder.arrivalTextView.setText("Llegada: " + flight.getArrivalHour() + "hs");
-        holder.flightNumberTextView.setText(flight.getFlightCode());
+        holder.flightNumberTextView.setText(flight.getFlightNumber());
         holder.dateTextView.setText("12/06");
         String status = flight.getStatus();
         switch(status){
