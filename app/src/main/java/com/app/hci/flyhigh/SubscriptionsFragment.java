@@ -24,9 +24,9 @@ public class SubscriptionsFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Flight[] values = new Flight[] {
-                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "12/06", "Activo"),
-                new Flight("EZE", "MIA", "Buenos Aires", "Miami", "10h5m", "LAN", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional de Miami", "159101", "12/06", "Demorado"),
-                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "12/06", "Cancelado"),
+                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "Activo", "12/06"  ),
+                new Flight("EZE", "MIA", "Buenos Aires", "Miami", "10h5m", "LATAM Airlines", "LAN", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional de Miami", "159101", "Demorado", "12/06"),
+                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005",  "Cancelado", "12/06"),
         };
         FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
 
@@ -47,7 +47,7 @@ public class SubscriptionsFragment extends ListFragment {
         i.putExtra(ids[2],flight.getDepartureCity());
         i.putExtra(ids[3],flight.getArrivalCity());
         i.putExtra(ids[4],flight.getDuration());
-        i.putExtra(ids[6],flight.getAirline());
+        i.putExtra(ids[6],flight.getAirlineName());
         i.putExtra(ids[7],flight.getWeekDays());
         i.putExtra(ids[8],flight.getDepartureHour());
         i.putExtra(ids[9],flight.getDepartureAirportName());

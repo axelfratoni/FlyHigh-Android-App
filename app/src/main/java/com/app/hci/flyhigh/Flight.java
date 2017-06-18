@@ -14,7 +14,8 @@ public class Flight {
     private String arrivalCity;
     private String duration;
     private ImageView airlineLogo; /// No se si lo tendria que tener el vuelo
-    private String airline;
+    private String airlineName;
+    private String airlineId;
     private boolean[] days;
     private String departureHour;
     private String departureAirportName;
@@ -25,8 +26,9 @@ public class Flight {
     private Double price;
     private String flightDate;
 
-    public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airline, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
-        this.airline = airline;
+    public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
+        this.airlineName = airlineName;
+        this.airlineId = airlineId;
         this.flightNumber= flightNumber;
         this.status = status;
         this.flightDate = flightDate;
@@ -43,8 +45,12 @@ public class Flight {
 
     public String getArrivalCity() { return arrivalCity; }
 
-    public String getAirline() {
-        return airline;
+    public String getAirlineName() {
+        return airlineName;
+    }
+
+    public String getAirlineId() {
+        return airlineId;
     }
 
     public String getDepartureHour(){ return departureHour; }

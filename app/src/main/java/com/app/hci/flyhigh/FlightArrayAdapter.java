@@ -40,13 +40,15 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_view_flight, parent, false);
             holder = new ViewHolder();
-            holder.airlineIdTextView = (TextView) convertView.findViewById(R.id.flight_airline_id);
+            holder.airlineIdTextView = (TextView) convertView.findViewById(R.id.flight_airlineId);
+            holder.departureAirportTextView = (TextView) convertView.findViewById(R.id.flight_departureAirport);
+            holder.arrivalAirportTextView = (TextView) convertView.findViewById(R.id.flight_arrivalAirport);
             holder.flightNumberTextView = (TextView) convertView.findViewById(R.id.flight_number);
-            holder.departureTextView = (TextView) convertView.findViewById(R.id.flight_departure);
-            holder.arrivalTextView = (TextView) convertView.findViewById(R.id.flight_arrival);
-            holder.dateTextView = (TextView) convertView.findViewById(R.id.flight_date);
+            holder.departureHourTextView = (TextView) convertView.findViewById(R.id.flight_departureHour);
+            holder.arrivalHourTextView = (TextView) convertView.findViewById(R.id.flight_arrivalHour);
+            holder.departureCityTextView = (TextView) convertView.findViewById(R.id.flight_departureCity);
+            holder.arrivalCityTextView = (TextView) convertView.findViewById(R.id.flight_arrivalCity);
             holder.statusTextView = (TextView) convertView.findViewById(R.id.flight_status);
-            holder.airportsTextView = (TextView) convertView.findViewById(R.id.flight_airports);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
@@ -57,12 +59,16 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
 
     private void setHolder(ViewHolder holder, int position) {
         Flight flight = getItem(position);
-        holder.airlineIdTextView.setText(flight.getAirline());
-        holder.airportsTextView.setText(flight.getDepartureAirport() + " -> " + flight.getArrivalAirport());
-        holder.departureTextView.setText("Salida: " + flight.getDepartureHour() + "hs");
-        holder.arrivalTextView.setText("Llegada: " + flight.getArrivalHour() + "hs");
+        holder.airlineIdTextView.setText(flight.getAirlineId());
+        holder.departureAirportTextView.setText(flight.getDepartureAirport());
+        holder.arrivalAirportTextView.setText(flight.getArrivalAirport());
         holder.flightNumberTextView.setText(flight.getFlightNumber());
-        holder.dateTextView.setText("12/06");
+        holder.departureHourTextView.setText(flight.getDepartureHour());
+        holder.arrivalHourTextView.setText(flight.getArrivalHour());
+        holder.departureCityTextView.setText(flight.getDepartureCity());
+        holder.arrivalCityTextView.setText(flight.getArrivalCity());
+        holder.statusTextView.setText(flight.getStatus());
+
         String status = flight.getStatus();
         switch(status){
             case "Activo":
@@ -83,11 +89,13 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
 
     public class ViewHolder{
         public TextView airlineIdTextView;
-        public TextView airportsTextView;
-        public TextView departureTextView;
-        public TextView arrivalTextView;
+        public TextView departureAirportTextView;
+        public TextView arrivalAirportTextView;
         public TextView flightNumberTextView;
-        public TextView dateTextView;
+        public TextView departureHourTextView;
+        public TextView arrivalHourTextView;
+        public TextView departureCityTextView;
+        public TextView arrivalCityTextView;
         public TextView statusTextView;
     }
 }
