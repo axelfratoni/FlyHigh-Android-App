@@ -71,12 +71,12 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         if (destination != null){
-            ((TextView) findViewById(R.id.prueba)).setText("True");
+            //((TextView) findViewById(R.id.prueba)).setText("True");
 
             new FlightsRetriever().execute();
 
         } else {
-            ((TextView) findViewById(R.id.prueba)).setText("False");
+            //((TextView) findViewById(R.id.prueba)).setText("False");
         }
 
     }
@@ -157,7 +157,7 @@ public class SearchActivity extends AppCompatActivity {
                     String airId = f.getJSONObject("airline").getString("id");
                     String flightNum = f.getString("number");
                     String fliDate = f.getJSONObject("departure").getString("date").split(" ")[0];
-                    result[i] = new Flight(depID, arrID, depName, arrName, duration, aeroName, depTime, depAirName, arrTime, arrAirName, airId + flightNum, fliDate, "Cancelado");
+                    result[i] = new Flight(depID, arrID, depName, arrName, duration, aeroName, airId, depTime, depAirName, arrTime, arrAirName, airId + flightNum, "Activo", fliDate);
                 }
 
             } catch (Exception exception) {
