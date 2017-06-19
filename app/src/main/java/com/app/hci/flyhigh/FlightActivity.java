@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.app.hci.flyhigh.R.id.flight_date;
 
 /**
  * Created by Gaston on 16/06/2017.
