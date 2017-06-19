@@ -1,5 +1,6 @@
 package com.app.hci.flyhigh;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -27,8 +30,19 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         view =  inflater.inflate(R.layout.search_layout, container, false);
-        resultTextView = (TextView) view.findViewById(R.id.textsearch);
-        new infoRetriever().execute();
+        //resultTextView = (TextView) view.findViewById(R.id.textsearch);
+        //new infoRetriever().execute();
+
+        EditText searchInput = (EditText) view.findViewById(R.id.search_input);
+        if (searchInput != null) {
+            searchInput.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
         return view;
     }
 
