@@ -12,12 +12,18 @@
         android:layout_alignParentTop="true"
         android:layout_weight="1" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="bigoteee" />
+
     <fragment
-        android:id="@+id/detailFragment"
-        class="com.app.hci.flyhigh.FlightFragment"
-        android:layout_width="match_parent"
+        android:id="@+id/flight_fragment"
+        android:name="com.app.hci.flyhigh.FlightFragment"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:layout="@layout/flight_fragment" />
+        android:layout_weight="2" />
 
 </LinearLayout>

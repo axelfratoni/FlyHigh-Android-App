@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import static android.R.attr.fragment;
+import static android.R.attr.screenSize;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFlightSelectedListener {
@@ -33,8 +35,6 @@ public class MainActivity extends AppCompatActivity
         transaction.replace(R.id.mainFrame, new HomeFragment());
         transaction.addToBackStack(null);
         transaction.commit();
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,38 +111,26 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void onFlightSelected(int position){
-        int screenSize = getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK;
-        if((screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE || screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE)&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+    public void onFlightSelected(int position) {
+        FlightFragment flightFrag = (FlightFragment)
+                getSupportFragmentManager().findFragmentById(R.id.flight_fragment);
+
+        if (flightFrag != null) {
+            Log.d("Hola","Hola");
+            flightFrag.updateFlightFragment((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag("subscriptionFragment")).getListAdapter().getItem(position));
+        } else {
+            Log.d("Chau","Chau");
+            FlightFragment newFragment = FlightFragment.newInstance((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag("subscriptionFragment")).getListAdapter().getItem(position));
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            System.out.print("XDDDDDDD");
-            prepareIntent(position);
-            transaction.replace(R.id.detailFragment, new FlightFragment());
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.mainFrame, newFragment);
             transaction.addToBackStack(null);
+
+            // Commit the transaction
             transaction.commit();
-        }else{
-            startActivity(prepareIntent(position));
         }
     }
 
-    private Intent prepareIntent(int position){
-        Intent i = new Intent(getApplicationContext(), FlightActivity.class);
-        Flight flight = (Flight) ((ListFragment)getSupportFragmentManager().findFragmentByTag("subscriptionFragment")).getListAdapter().getItem(position);
-        String[] ids = getResources().getStringArray(R.array.flight_intent);
-        i.putExtra(ids[0],flight.getDepartureAirport());
-        i.putExtra(ids[1],flight.getArrivalAirport());
-        i.putExtra(ids[2],flight.getDepartureCity());
-        i.putExtra(ids[3],flight.getArrivalCity());
-        i.putExtra(ids[4],flight.getDuration());
-        i.putExtra(ids[6],flight.getAirlineName());
-        i.putExtra(ids[7],flight.getWeekDays());
-        i.putExtra(ids[8],flight.getDepartureHour());
-        i.putExtra(ids[9],flight.getDepartureAirportName());
-        i.putExtra(ids[10],flight.getArrivalHour());
-        i.putExtra(ids[11],flight.getArrivalAirportName());
-        i.putExtra(ids[12],flight.getFlightNumber());
-        i.putExtra(ids[13],flight.getStatus());
-        return i;
-    }
 }
