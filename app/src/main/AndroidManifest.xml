@@ -32,13 +32,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FlightActivity" >
-            <!--Default Intent Filter-->
-            <intent-filter>
-                <action android:name="android.intent.action.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <activity android:name=".SearchActivity"
             android:launchMode="singleTop">
             <intent-filter>

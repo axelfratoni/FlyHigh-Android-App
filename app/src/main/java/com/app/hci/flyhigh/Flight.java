@@ -3,6 +3,8 @@ package com.app.hci.flyhigh;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 /**
  * Created by Gaston on 15/06/2017.
  */
@@ -27,6 +29,52 @@ public class Flight {
     private String flightDate;
 
     public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
+        setFlightData(departureAirport, arrivalAirport, departureCity, arrivalCity, duration, airlineName, airlineId, departureHour, departureAirportName, arrivalHour, arrivalAirportName, flightNumber, status, flightDate);
+    }
+
+    public Flight(JSONObject stat){
+        try {
+            String arrID = stat.getJSONObject("arrival").getJSONObject("airport").getJSONObject("city").getString("id");
+            String arrName = stat.getJSONObject("arrival").getJSONObject("airport").getJSONObject("city").getString("name").split(",")[0];
+            String depID = stat.getJSONObject("departure").getJSONObject("airport").getJSONObject("city").getString("id");
+            String depName = stat.getJSONObject("departure").getJSONObject("airport").getJSONObject("city").getString("name").split(",")[0];
+            String duration = "6:66";
+            String aeroName = stat.getJSONObject("airline").getString("name");
+            String depTime = stat.getJSONObject("departure").getString("scheduled_time").split(" ")[1];
+            String arrTime = stat.getJSONObject("arrival").getString("scheduled_time").split(" ")[1];
+            String depAirName = stat.getJSONObject("departure").getJSONObject("airport").getString("description").split(",")[0];
+            String arrAirName = stat.getJSONObject("arrival").getJSONObject("airport").getString("description").split(",")[0];
+            String airId = stat.getJSONObject("airline").getString("id");
+            String flightNum = stat.getString("number");
+            String fliDate = stat.getJSONObject("departure").getString("scheduled_time").split(" ")[0];
+            String status = "-";
+            switch (stat.getString("status")) {
+                case "S":
+                    status = "Programado";
+                    break;
+                case "A":
+                    status = "Activo";
+                    break;
+                case "R":
+                    status = "Desviado";
+                    break;
+                case "L":
+                    status = "Aterrizado";
+                    break;
+                case "C":
+                    status = "Cancelado";
+                    break;
+                default:
+                    new RuntimeException("Problema en el servidor");
+            }
+            setFlightData(depID, arrID, depName, arrName, duration, aeroName, airId, depTime, depAirName, arrTime, arrAirName, airId + flightNum, status, fliDate);
+        }catch(Exception e){
+            e.printStackTrace();
+            //result = "No existe ese vuelo";
+        }
+    }
+
+    private void setFlightData(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
         this.airlineName = airlineName;
         this.airlineId = airlineId;
         this.flightNumber= flightNumber;
