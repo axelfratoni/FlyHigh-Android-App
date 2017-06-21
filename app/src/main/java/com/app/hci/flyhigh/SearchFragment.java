@@ -1,5 +1,6 @@
 package com.app.hci.flyhigh;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -36,6 +37,7 @@ public class SearchFragment extends ListFragment {
     SharedPreferences preferences;
     String flyCode;
     View view;
+    OnFlightSelectedListener mCallback;
 
     @Nullable
     @Override
@@ -172,6 +174,18 @@ public class SearchFragment extends ListFragment {
             }
         }
     }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnFlightSelectedListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
 }
 
