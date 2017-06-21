@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
@@ -37,6 +39,7 @@ public class SearchFragment extends ListFragment {
     SharedPreferences preferences;
     String flyCode;
     View view;
+    private boolean called;
     OnFlightSelectedListener mCallback;
 
     @Nullable
@@ -45,20 +48,27 @@ public class SearchFragment extends ListFragment {
 
         view =  inflater.inflate(R.layout.search_layout, container, false);
         setHasOptionsMenu(true);
-        preferences = getActivity().getPreferences(MODE_PRIVATE);
+        Button button = (Button) view.findViewById(R.id.button);
+        if (button != null) {
+            button.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(DATA,"");
+                    editor.apply();
+                    showHistory();
+                }
+            });
+        }
+
         return view;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Flight[] values = new Flight[] {
-                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "Activo", "12/06"  ),
-                new Flight("EZE", "MIA", "Buenos Aires", "Miami", "10h5m", "LATAM Airlines", "LAN", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional de Miami", "159101", "Demorado", "12/06"),
-                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005",  "Cancelado", "12/06"),
-        };
-        FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
-        setListAdapter(adapter);
+        preferences = getActivity().getPreferences(MODE_PRIVATE);
+        showHistory();
     }
 
     @Override
@@ -81,16 +91,20 @@ public class SearchFragment extends ListFragment {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             public boolean onQueryTextChange(String newText) {
+                called = false;
                 ((TextView) view.findViewById(R.id.prueba)).setText(newText);
                 return false;
             }
 
             public boolean onQueryTextSubmit(String query) {
                 if (query.matches(".+-\\d+")) {
-                    flyCode = query;
-                    new flyRetriever().execute();
+                    if (!called) {
+                        flyCode = query;
+                        new flyRetriever().execute();
+                        called = true;
+                    }
                 } else {
-                    ((TextView) view.findViewById(R.id.prueba)).setText("No es un codigo de vuelo");
+
                 }
                 return false;
             }
@@ -107,6 +121,25 @@ public class SearchFragment extends ListFragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void showHistory() {
+        String history = preferences.getString(DATA, "");
+        if (!history.equals("")) {
+            String[] flights = history.split("#");
+            Flight[] values = new Flight[flights.length];
+            for (int i = 0; i < flights.length; i++) {
+                values[i] = JSONtoFly(flights[flights.length-1-i]);
+                if (values[i] == null) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(DATA,"");
+                    editor.apply();
+                    return;
+                }
+            }
+            FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
+            setListAdapter(adapter);
         }
     }
 
@@ -155,22 +188,33 @@ public class SearchFragment extends ListFragment {
         }
     }
 
-    private class flyRetriever extends AsyncTask<Void, Void, Flight> {
+    private class flyRetriever extends AsyncTask<Void, Void, String> {
 
         @Override
-        protected Flight doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             String json = new GetJSON("http://hci.it.itba.edu.ar/v1/api/status.groovy?method=getflightstatus&airline_id="+ flyCode.split("-")[0] +"&flight_number="+ flyCode.split("-")[1]).get();
-            Flight result = JSONtoFly(json);
-            return result;
+            return json;
         }
 
         @Override
-        protected void onPostExecute(Flight result) {
-            if (result != null) {
-                FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), new Flight[]{result});
-                setListAdapter(adapter);
+        protected void onPostExecute(String result) {
+            if (result != null && JSONtoFly(result) != null) {
+                String history = preferences.getString(DATA, "");
+                if (!history.equals("")) {
+                    history += "#";
+                }
+                history += result;
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(DATA,history);
+                editor.apply();
+                showHistory();
+
             } else {
-                ((TextView) view.findViewById(R.id.prueba)).setText("No se encuentra ese vuelo");
+                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator_layout);
+                if (coordinatorLayout != null) {
+                    // Snackbar sin acción.
+                    Snackbar.make(coordinatorLayout, "No se encuentra ese vuelo", Snackbar.LENGTH_SHORT).show();
+                }
             }
         }
     }
