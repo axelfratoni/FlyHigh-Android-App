@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity
                 Configuration.SCREENLAYOUT_SIZE_MASK;
         if((screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE || screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE)&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            System.out.print("XDDDDDDD");
             prepareIntent(position);
             transaction.replace(R.id.detailFragment, new FlightFragment());
             transaction.addToBackStack(null);

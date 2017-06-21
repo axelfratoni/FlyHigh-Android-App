@@ -34,7 +34,6 @@ public class SubscriptionsFragment extends ListFragment {
                 new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005",  "Cancelado", "12/06"),
         };
         FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
-
         setListAdapter(adapter);
     }
     @Override
