@@ -1,17 +1,16 @@
 package com.app.hci.flyhigh;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 
-import static android.R.attr.duration;
-import static com.app.hci.flyhigh.R.id.flight_number;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * Created by Gaston on 19/06/2017.
@@ -20,6 +19,7 @@ import static com.app.hci.flyhigh.R.id.flight_number;
 public class FlightFragment extends Fragment{
     int mCurrentPosition = -1;
     final static String ARG_POSITION = "position";
+    private Flight flight;
     private static String[] ids = { "departure_airport",
         "arrival_airport",
         "departure_city",
@@ -33,7 +33,8 @@ public class FlightFragment extends Fragment{
         "arrival_hour",
         "arrival_airport_name",
         "flight_number",
-        "subscription_status"};
+        "subscription_status",
+        "json_representation"};
 
 
     public static FlightFragment newInstance(Flight flight) {
@@ -44,7 +45,37 @@ public class FlightFragment extends Fragment{
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        try {
+            this.flight = new Flight(new JSONObject(getArguments().getString(ids[14])));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        DataManager.saveFlightInHistory(getActivity(), flight);
+        super.onCreate(savedInstanceState);
+        Button button = (Button) getActivity().findViewById(R.id.flight_info_suscriptionButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    if (getArguments().getString(ids[13]).equals("Suscripto")) {
+                        switchSubscriptionStatus();
+                        DataManager.unsubscribe( getActivity(), flight);
+                    }else{
+                        switchSubscriptionStatus();
+                        DataManager.subscribeToFlight( getActivity(), flight);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
+    }
+    private void switchSubscriptionStatus(){
+        getArguments().putString(ids[13], "NoSuscripto");
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -143,6 +174,7 @@ public class FlightFragment extends Fragment{
         args.putString(ids[11],flight.getArrivalAirportName());
         args.putString(ids[12],flight.getFlightNumber());
         args.putString(ids[13],flight.getStatus());
+        args.putString(ids[14],flight.getJsonRepresentation());
         return args;
     }
 }

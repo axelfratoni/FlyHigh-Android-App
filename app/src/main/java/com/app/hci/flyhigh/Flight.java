@@ -10,6 +10,7 @@ import org.json.JSONObject;
  */
 
 public class Flight {
+    private JSONObject jsonRepresentation;
     private String departureAirport;
     private String arrivalAirport;
     private String departureCity;
@@ -28,6 +29,7 @@ public class Flight {
     private Double price;
     private String flightDate;
 
+    @Deprecated
     public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
         setFlightData(departureAirport, arrivalAirport, departureCity, arrivalCity, duration, airlineName, airlineId, departureHour, departureAirportName, arrivalHour, arrivalAirportName, flightNumber, status, flightDate);
     }
@@ -68,6 +70,7 @@ public class Flight {
                     new RuntimeException("Problema en el servidor");
             }
             setFlightData(depID, arrID, depName, arrName, duration, aeroName, airId, depTime, depAirName, arrTime, arrAirName, airId + flightNum, status, fliDate);
+            jsonRepresentation = stat;
         }catch(Exception e){
             e.printStackTrace();
             //result = "No existe ese vuelo";
@@ -134,4 +137,6 @@ public class Flight {
     public String getDuration() { return duration; }
 
     public String getDepartureCity() { return departureCity; }
+
+    public String getJsonRepresentation(){ return jsonRepresentation.toString(); }
 }
