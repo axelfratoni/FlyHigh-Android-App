@@ -92,7 +92,6 @@ public class SearchFragment extends ListFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             public boolean onQueryTextChange(String newText) {
                 called = false;
-                ((TextView) view.findViewById(R.id.prueba)).setText(newText);
                 return false;
             }
 
@@ -104,7 +103,11 @@ public class SearchFragment extends ListFragment {
                         called = true;
                     }
                 } else {
-
+                    CoordinatorLayout coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator_layout);
+                    if (coordinatorLayout != null) {
+                        // Snackbar sin acción.
+                        Snackbar.make(coordinatorLayout, "No es un codigo de vuelo", Snackbar.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }
@@ -125,6 +128,7 @@ public class SearchFragment extends ListFragment {
     }
 
     public void showHistory() {
+        System.out.println("asdad");
         String history = preferences.getString(DATA, "");
         if (!history.equals("")) {
             String[] flights = history.split("#");
@@ -140,7 +144,30 @@ public class SearchFragment extends ListFragment {
             }
             FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
             setListAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnFlightSelectedListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        System.out.println("Position: " + position);
+        mCallback.onFlightSelected(position);
+        getListView().setItemChecked(position, true);
     }
 
     public Flight JSONtoFly(String json) {
@@ -183,19 +210,6 @@ public class SearchFragment extends ListFragment {
                     Snackbar.make(coordinatorLayout, "No se encuentra ese vuelo", Snackbar.LENGTH_SHORT).show();
                 }
             }
-        }
-    }
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnFlightSelectedListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement OnHeadlineSelectedListener");
         }
     }
 }
