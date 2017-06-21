@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static android.R.id.list;
 
 /**
@@ -26,23 +28,38 @@ import static android.R.id.list;
 
 public class SubscriptionsFragment extends ListFragment {
     OnFlightSelectedListener mCallback;
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Flight[] values = new Flight[] {
-                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "Activo", "12/06"  ),
-                new Flight("EZE", "MIA", "Buenos Aires", "Miami", "10h5m", "LATAM Airlines", "LAN", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional de Miami", "159101", "Demorado", "12/06"),
-                new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005",  "Cancelado", "12/06"),
-        };
-        FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Flight f1 = new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005", "Activo", "12/06"  );
+        Flight f2 = new Flight("EZE", "MIA", "Buenos Aires", "Miami", "10h5m", "LATAM Airlines", "LAN", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional de Miami", "159101", "Demorado", "12/06");
+        Flight f3 = new Flight("EZE", "JFK", "Buenos Aires", "Nueva York", "14h10m", "Aerolineas Argentinas", "AA", "21.00", "Aeropuerto internacional de ezeiza", "07.30", "Aeropuerto internacional John F. Kennedy", "AR1005",  "Cancelado", "12/06");
+        Flight[] valuesA = new Flight[] { f1, f2, f3 };
+        if(FlightsHolder.subscriptionFlights == null){
+               FlightsHolder.subscriptionFlights = new ArrayList<>();
+           }
+        FlightsHolder.subscriptionFlights.add(f1);
+        FlightsHolder.subscriptionFlights.add(f2);
+        FlightsHolder.subscriptionFlights.add(f3);
+        FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), valuesA);
         setListAdapter(adapter);
     }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         mCallback.onFlightSelected(position);
+        getListView().setItemChecked(position, true);
     }
 
+    public void onStart() {
+        super.onStart();
 
+        // When in two-pane layout, set the listview to highlight the selected list item
+        // (We do this during onStart because at the point the listview is available.)
+        if (getFragmentManager().findFragmentById(R.id.flight_fragment) != null) {
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        }
+    }
 
     @Nullable
     @Override
