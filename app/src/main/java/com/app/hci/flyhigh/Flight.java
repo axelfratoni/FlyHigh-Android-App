@@ -77,6 +77,16 @@ public class Flight {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o != null && Flight.class.isAssignableFrom(o.getClass())) {
+            if (((Flight)o).getFlightNumber().equals(this.getFlightNumber()) && ((Flight)o).getAirlineId().equals(this.getAirlineId())) {
+                return true;
+            }
+        }
+        return  false;
+    }
+
     private void setFlightData(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
         this.airlineName = airlineName;
         this.airlineId = airlineId;

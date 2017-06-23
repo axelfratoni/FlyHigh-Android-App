@@ -67,6 +67,26 @@ public class DataManager {
         ((MainActivity) context).getNotificationDealer().stopNotifications();
     }
 
+    @Deprecated
+    public static void updateSubcription(Context context, Flight f) {
+        SharedPreferences preferences = context.getSharedPreferences("subs",MODE_PRIVATE);
+        String data = "";
+        Flight[] actualSubs = new DataManager().retrieveSubscriptionsDep(context);
+        for (int i=0; i<actualSubs.length; i++) {
+            if (i != 0) {
+                data += "#";
+            }
+            if(actualSubs[i].equals(f)) {
+                data += f.getJsonRepresentation();
+            } else {
+                data += actualSubs[i].getJsonRepresentation();
+            }
+        }
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("subs",data);
+        editor.apply();
+    }
+
     public static void saveFlightInHistory(Context context, Flight f) {
         try {
             saveFlight(context, f, HISTORY_FILE_NAME);

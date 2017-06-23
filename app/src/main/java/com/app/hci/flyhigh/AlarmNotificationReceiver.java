@@ -42,7 +42,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
 
     protected void updateAndNotificate(Flight updatedFlight) {
         //new DataManager().clearSubscriptions(context);
-        new DataManager().subscribeFlight(context, updatedFlight);
+        new DataManager().updateSubcription(context, updatedFlight);
 
         Intent notificationIntent = new Intent(context, NotificationView.class);
 
