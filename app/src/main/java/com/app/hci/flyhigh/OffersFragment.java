@@ -1,17 +1,33 @@
 package com.app.hci.flyhigh;
 import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.Activity;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -33,17 +49,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by Gaston on 15/06/2017.
  */
 
-public class OffersFragment extends Fragment implements OnMapReadyCallback {
+public class OffersFragment extends Fragment {
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    Fragment mapFragment = new OffersMapFragment();
+    Fragment listFragment = new OffersListFragment();
 
-    }
 
     @Nullable
     @Override
@@ -51,27 +67,54 @@ public class OffersFragment extends Fragment implements OnMapReadyCallback {
 
         View rootView = inflater.inflate(R.layout.offers_layout, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        setHasOptionsMenu(true);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.offers_frame, mapFragment)
+                .commit();
 
         return rootView;
     }
 
     @Override
-    public void onMapReady(final GoogleMap map) {
+    public void onCreate(Bundle savedInstanceState) {
 
-        final String url = "http://hci.it.itba.edu.ar/v1/api/booking.groovy?method=getflightdeals&from=BUE";
+        super.onCreate(savedInstanceState);
 
-        /*JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.map_menu, menu);
+
+        MenuItem itemSwitch = menu.findItem(R.id.mySwitch);
+
+        itemSwitch.setActionView(R.layout.switch_layout);
+
+        final Switch sw = (Switch) menu.findItem(R.id.mySwitch).getActionView().findViewById(R.id.action_switch);
+
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onResponse(JSONObject response) {
-
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.offers_frame, mapFragment)
+                            .commit();
+                } else {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.offers_frame, listFragment)
+                            .commit();
+                }
             }
-        });*/
+        });
 
-        LatLng bsas = new LatLng(-34.603, -58.381);
-        map.addMarker(new MarkerOptions().position(bsas)
-                .title("Buenos Aires"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(bsas));
+        sw.setChecked(true);
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
+
