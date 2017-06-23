@@ -69,7 +69,7 @@ public class Flight {
                 default:
                     new RuntimeException("Problema en el servidor");
             }
-            setFlightData(depID, arrID, depName, arrName, duration, aeroName, airId, depTime, depAirName, arrTime, arrAirName, airId + flightNum, status, fliDate);
+            setFlightData(depID, arrID, depName, arrName, duration, aeroName, airId, depTime, depAirName, arrTime, arrAirName, flightNum, status, fliDate);
             jsonRepresentation = stat;
         }catch(Exception e){
             e.printStackTrace();

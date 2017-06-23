@@ -105,7 +105,6 @@ public class SearchFragment extends ListFragment {
                 } else {
                     CoordinatorLayout coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator_layout);
                     if (coordinatorLayout != null) {
-                        // Snackbar sin acción.
                         Snackbar.make(coordinatorLayout, "No es un codigo de vuelo", Snackbar.LENGTH_SHORT).show();
                     }
                 }
@@ -128,7 +127,6 @@ public class SearchFragment extends ListFragment {
     }
 
     public void showHistory() {
-        System.out.println("asdad");
         String history = preferences.getString(DATA, "");
         if (!history.equals("")) {
             String[] flights = history.split("#");
@@ -144,7 +142,7 @@ public class SearchFragment extends ListFragment {
             }
             FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
             setListAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
         }
     }
 
@@ -159,6 +157,16 @@ public class SearchFragment extends ListFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        // When in two-pane layout, set the listview to highlight the selected list item
+        // (We do this during onStart because at the point the listview is available.)
+        if (getFragmentManager().findFragmentById(R.id.flight_fragment) != null) {
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }
 
@@ -177,7 +185,6 @@ public class SearchFragment extends ListFragment {
             return new Flight(stat);
         } catch (Exception exception) {
             exception.printStackTrace();
-            //result = "No existe ese vuelo";
             return null;
         }
     }
@@ -206,7 +213,6 @@ public class SearchFragment extends ListFragment {
             } else {
                 CoordinatorLayout coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator_layout);
                 if (coordinatorLayout != null) {
-                    // Snackbar sin acción.
                     Snackbar.make(coordinatorLayout, "No se encuentra ese vuelo", Snackbar.LENGTH_SHORT).show();
                 }
             }

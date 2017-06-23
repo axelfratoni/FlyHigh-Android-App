@@ -301,7 +301,7 @@
             android:id="@+id/flight_info_suscriptionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Subscribir" />
     </LinearLayout>
 
 

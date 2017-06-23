@@ -1,18 +1,71 @@
 package com.app.hci.flyhigh;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Gaston on 21/06/2017.
  */
 
 public class DataManager {
-    private static String HISTORY_FILE_NAME = "history";
-    private static String SUBSCRIPTIONS_FILE_NAME = "subscriptions";
+    private static final String HISTORY_FILE_NAME = "history";
+    private static final String SUBSCRIPTIONS_FILE_NAME = "subscriptions";
+
+    @Deprecated
+    public static void subscribeFlight(Context context, Flight f) {
+        SharedPreferences preferences = context.getSharedPreferences("subs",MODE_PRIVATE);
+        String data = preferences.getString("subs", "");
+        if (!data.equals("")) {
+            data += "#";
+        } else {
+            ((MainActivity) context).getNotificationDealer().startNotifications();
+        }
+        data += f.getJsonRepresentation();
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("subs",data);
+        editor.apply();
+    }
+
+    @Deprecated
+    public static Flight[] retrieveSubscriptionsDep(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("subs",MODE_PRIVATE);
+        String data = preferences.getString("subs", "");
+        Flight[] flights = null;
+        if (!data.equals("")) {
+            String[] flightJSONs = data.split("#");
+            flights = new Flight[flightJSONs.length];
+            for (int i = 0; i < flightJSONs.length; i++) {
+                try {
+                    flights[i] = new Flight(new JSONObject(flightJSONs[i]));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (flights[i] == null) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("subs","");
+                    editor.apply();
+                    throw new RuntimeException("Corrupted data");
+                }
+            }
+        }
+        return flights;
+    }
+
+    @Deprecated
+    public static void clearSubscriptions(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("subs",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("subs","");
+        editor.apply();
+        ((MainActivity) context).getNotificationDealer().stopNotifications();
+    }
 
     public static void saveFlightInHistory(Context context, Flight f) {
         try {
@@ -24,7 +77,7 @@ public class DataManager {
 
     public static void subscribeToFlight(Context context, Flight f) {
         try{
-        saveFlight(context,f,SUBSCRIPTIONS_FILE_NAME);
+            saveFlight(context, f,SUBSCRIPTIONS_FILE_NAME);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -66,8 +119,8 @@ public class DataManager {
         }
     }
 
-    private static void saveFlight(Context context, Flight f, String fileName)throws JSONException{
-        SharedPreferences mSettings = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+    private static void saveFlight(Context context, Flight f, String fileName) throws JSONException{
+        SharedPreferences mSettings = context.getSharedPreferences(fileName, MODE_PRIVATE);
         SharedPreferences.Editor editor = mSettings.edit();
         int count = mSettings.getInt("flightsCount", 0);
         for (int i = 1; i <= count; i++) {
@@ -82,8 +135,9 @@ public class DataManager {
     }
 
     private static Flight[] retrieveFlights(Context context, String fileName)throws JSONException{
-        SharedPreferences mSettings = context.getSharedPreferences("subscriptions", Context.MODE_PRIVATE);
+        SharedPreferences mSettings = context.getSharedPreferences("subscriptions", MODE_PRIVATE);
         int count = mSettings.getInt("flightsCount", 0);
+        System.out.println(count);
         Flight[] flights = new Flight[count];
         for(int i = 1; i <= count; i++){
             flights[i] = new Flight(new JSONObject(mSettings.getString("flight"+i, null)));
@@ -92,7 +146,7 @@ public class DataManager {
     }
 
     private static void deleteFlight(Context context, Flight flight, String fileName)throws JSONException{
-        SharedPreferences mSettings = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        SharedPreferences mSettings = context.getSharedPreferences(fileName, MODE_PRIVATE);
         int count = mSettings.getInt("flightsCount", 0);
         if (count == 0){
             return;

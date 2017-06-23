@@ -8,4 +8,6 @@
     <string name="error">Error</string>
     <string name="search_text">Buscar</string>
     <string name="action_search">Buscar</string>
+    <string name="notification_title">El estado de tus vuelos ha cambiado</string>
+    <string name="notification_text">Texto de notificacion</string>
 </resources>

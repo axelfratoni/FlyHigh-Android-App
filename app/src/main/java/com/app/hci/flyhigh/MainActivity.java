@@ -22,6 +22,8 @@ import static android.R.attr.fragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFlightSelectedListener {
     FragmentManager mFragmentManager;
+    String fragmentName;
+    NotificationDealer notificationDealer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        notificationDealer = new NotificationDealer(MainActivity.this);
     }
 
     @Override
@@ -89,19 +92,24 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (id == R.id.nav_home) {
             fragment = new HomeFragment();
-            transaction.add(fragment, "homeFragment");
+            fragmentName = "homeFragment";
+            transaction.add(fragment, fragmentName);
         } else if (id == R.id.nav_suscriptions) {
             fragment = new SubscriptionsFragment();
-            transaction.add(fragment, "subscriptionFragment");
+            fragmentName = "subscriptionFragment";
+            transaction.add(fragment, fragmentName);
         } else if (id == R.id.nav_offers) {
             fragment = new OffersFragment();
-            transaction.add(fragment, "offersFragment");
+            fragmentName = "offersFragment";
+            transaction.add(fragment, fragmentName);
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
-            transaction.add(fragment, "historyFragment");
+            fragmentName = "historyFragment";
+            transaction.add(fragment, fragmentName);
         } else if (id == R.id.nav_search) {
             fragment = new SearchFragment();
-            transaction.add(fragment, "searchFragment");
+            fragmentName = "searchFragment";
+            transaction.add(fragment, fragmentName);
         }
         transaction.replace(R.id.mainFrame, fragment);
         transaction.addToBackStack(null);
@@ -118,10 +126,10 @@ public class MainActivity extends AppCompatActivity
 
         if (flightFrag != null) {
             Log.d("Hola","Hola");
-            flightFrag.updateFlightFragment((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag("subscriptionFragment")).getListAdapter().getItem(position));
+            flightFrag.updateFlightFragment((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag(fragmentName)).getListAdapter().getItem(position));
         } else {
             Log.d("Chau","Chau");
-            FlightFragment newFragment = FlightFragment.newInstance((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag("subscriptionFragment")).getListAdapter().getItem(position));
+            FlightFragment newFragment = FlightFragment.newInstance((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag(fragmentName)).getListAdapter().getItem(position));
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
@@ -131,6 +139,10 @@ public class MainActivity extends AppCompatActivity
             // Commit the transaction
                 transaction.commit();
         }
+    }
+
+    public NotificationDealer getNotificationDealer() {
+        return notificationDealer;
     }
 
 }

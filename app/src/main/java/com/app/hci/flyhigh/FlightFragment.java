@@ -1,6 +1,8 @@
 package com.app.hci.flyhigh;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
 
 public class FlightFragment extends Fragment{
     int mCurrentPosition = -1;
+
     final static String ARG_POSITION = "position";
     private Flight flight;
     private static String[] ids = { "departure_airport",
@@ -54,31 +57,31 @@ public class FlightFragment extends Fragment{
         }
         DataManager.saveFlightInHistory(getActivity(), flight);
         super.onCreate(savedInstanceState);
-        Button button = (Button) getActivity().findViewById(R.id.flight_info_suscriptionButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                try {
-                    if (getArguments().getString(ids[13]).equals("Suscripto")) {
-                        switchSubscriptionStatus();
-                        DataManager.unsubscribe( getActivity(), flight);
-                    }else{
-                        switchSubscriptionStatus();
-                        DataManager.subscribeToFlight( getActivity(), flight);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
+//        Button button = (Button) getActivity().findViewById(R.id.flight_info_suscriptionButton);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                try {
+//                    if (getArguments().getString(ids[13]).equals("Suscripto")) {
+//                        switchSubscriptionStatus();
+//                        DataManager.unsubscribe( getActivity(), flight);
+//                    }else{
+//                        switchSubscriptionStatus();
+//                        DataManager.subscribeToFlight( getActivity(), flight);
+//                    }
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
     }
+
     private void switchSubscriptionStatus(){
         getArguments().putString(ids[13], "NoSuscripto");
 
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // If activity recreated (such as from screen rotate), restore
         // the previous article selection set by onSaveInstanceState().
@@ -87,8 +90,18 @@ public class FlightFragment extends Fragment{
             mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
         }
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.flight_fragment, container, false);
+        final View view =  inflater.inflate(R.layout.flight_fragment, container, false);
+        Button button = (Button) view.findViewById(R.id.flight_info_suscriptionButton);
+        if (button != null) {
+            button.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new DataManager().subscribeFlight(view.getContext(),flight);
+                }
+            });
+        }
+
+        return view;
     }
 
     @Override
