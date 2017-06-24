@@ -32,6 +32,7 @@ public class DataManager {
     public static void subscribeToFlight(Context context, Flight f) {
         try{
             saveFlight(context, f,SUBSCRIPTIONS_FILE_NAME);
+            ((MainActivity) context).getNotificationDealer().startNotifications();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -162,6 +163,7 @@ public class DataManager {
 
     public static void wipeSubscriptions(Context context){
         Log.d("Wipe", "Wiping subscription");
+        ((MainActivity) context).getNotificationDealer().stopNotifications();
         SharedPreferences mSettings = context.getSharedPreferences(SUBSCRIPTIONS_FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = mSettings.edit();
         editor.clear();

@@ -189,6 +189,7 @@ public class SearchFragment extends ListFragment {
             if (result != null && stat != null) {
                 Flight f = new Flight(stat);
                 DataManager.saveFlightInHistory(getActivity(), f);
+                showHistory();
                 mCallback.onFlightSearch(f);
             } else {
                 CoordinatorLayout coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator_layout);
