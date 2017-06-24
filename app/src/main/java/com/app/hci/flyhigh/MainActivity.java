@@ -20,7 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import static android.R.attr.fragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnFlightSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnFlightSelectedListener, OnFlightSearchedListener {
     FragmentManager mFragmentManager;
     String fragmentName;
     NotificationDealer notificationDealer;
@@ -125,16 +125,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void onFlightSelected(int position) {
+    public void onFlightSearch(Flight f){
         FlightFragment flightFrag = (FlightFragment)
                 getSupportFragmentManager().findFragmentById(R.id.flight_fragment);
 
         if (flightFrag != null) {
             Log.d("Hola","Hola");
-            flightFrag.updateFlightFragment((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag(fragmentName)).getListAdapter().getItem(position));
+            flightFrag.updateFlightFragment(f);
         } else {
             Log.d("Chau","Chau");
-            FlightFragment newFragment = FlightFragment.newInstance((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag(fragmentName)).getListAdapter().getItem(position));
+            FlightFragment newFragment = FlightFragment.newInstance(f);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
@@ -142,8 +142,13 @@ public class MainActivity extends AppCompatActivity
             transaction.addToBackStack(null);
 
             // Commit the transaction
-                transaction.commit();
+            transaction.commit();
         }
+    }
+
+
+    public void onFlightSelected(int position) {
+        onFlightSearch((Flight) ((ListFragment) getSupportFragmentManager().findFragmentByTag(fragmentName)).getListAdapter().getItem(position));
     }
 
     public NotificationDealer getNotificationDealer() {

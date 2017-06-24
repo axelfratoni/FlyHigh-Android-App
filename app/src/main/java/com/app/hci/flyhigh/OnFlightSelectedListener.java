@@ -5,6 +5,6 @@ package com.app.hci.flyhigh;
  */
 
 public interface OnFlightSelectedListener {
-    public void onFlightSelected(int position);
+    void onFlightSelected(int position);
 
 }

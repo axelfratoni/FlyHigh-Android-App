@@ -2,7 +2,6 @@ package com.app.hci.flyhigh;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,11 +36,11 @@ import static android.content.Context.MODE_PRIVATE;
 public class SearchFragment extends ListFragment {
     String DATA = "HISTORIAL";
     Flight[] searchHist;
-    SharedPreferences preferences;
     String flyCode;
     View view;
     private boolean called;
-    OnFlightSelectedListener mCallback;
+    OnFlightSearchedListener mCallback;
+    OnFlightSelectedListener mCallback2;
 
     @Nullable
     @Override
@@ -53,9 +53,7 @@ public class SearchFragment extends ListFragment {
             button.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(DATA,"");
-                    editor.apply();
+                    DataManager.wipeHistory(getActivity());
                     showHistory();
                 }
             });
@@ -67,7 +65,7 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferences = getActivity().getPreferences(MODE_PRIVATE);
+
         showHistory();
     }
 
@@ -127,23 +125,9 @@ public class SearchFragment extends ListFragment {
     }
 
     public void showHistory() {
-        String history = preferences.getString(DATA, "");
-        if (!history.equals("")) {
-            String[] flights = history.split("#");
-            Flight[] values = new Flight[flights.length];
-            for (int i = 0; i < flights.length; i++) {
-                values[i] = JSONtoFly(flights[flights.length-1-i]);
-                if (values[i] == null) {
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(DATA,"");
-                    editor.apply();
-                    return;
-                }
-            }
-            FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
-            setListAdapter(adapter);
-            //adapter.notifyDataSetChanged();
-        }
+        Flight[] values = DataManager.retrieveHistoryFlights(getActivity());
+        FlightArrayAdapter adapter = new FlightArrayAdapter(getActivity(), values);
+        setListAdapter(adapter);
     }
 
     @Override
@@ -153,7 +137,8 @@ public class SearchFragment extends ListFragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnFlightSelectedListener) getActivity();
+            mCallback = (OnFlightSearchedListener) getActivity();
+            mCallback2 = (OnFlightSelectedListener) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement OnHeadlineSelectedListener");
@@ -174,15 +159,15 @@ public class SearchFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         System.out.println("Position: " + position);
-        mCallback.onFlightSelected(position);
+        mCallback2.onFlightSelected(position);
         getListView().setItemChecked(position, true);
     }
 
-    public Flight JSONtoFly(String json) {
+    public JSONObject getStatusObject(String json) {
         try {
             JSONObject obj = new JSONObject(json);
             JSONObject stat = obj.getJSONObject("status");
-            return new Flight(stat);
+            return stat;
         } catch (Exception exception) {
             exception.printStackTrace();
             return null;
@@ -199,17 +184,12 @@ public class SearchFragment extends ListFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            if (result != null && JSONtoFly(result) != null) {
-                String history = preferences.getString(DATA, "");
-                if (!history.equals("")) {
-                    history += "#";
-                }
-                history += result;
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(DATA,history);
-                editor.apply();
-                showHistory();
-
+            Log.d("Vuelo buscado: ", result);
+            JSONObject stat = getStatusObject(result);
+            if (result != null && stat != null) {
+                Flight f = new Flight(stat);
+                DataManager.saveFlightInHistory(getActivity(), f);
+                mCallback.onFlightSearch(f);
             } else {
                 CoordinatorLayout coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator_layout);
                 if (coordinatorLayout != null) {
