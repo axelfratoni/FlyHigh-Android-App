@@ -85,10 +85,9 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                 JSONObject newJsonFlight = new JSONObject(newJson).getJSONObject("status");
                 Flight newFlight = new Flight(newJsonFlight);
                 String newStatus = newFlight.getStatus();
-//                if (!flightBeingChecked.getStatus().equals(newStatus)) {
-//                    updateAndNotificate(newFlight);
-//                }
-                updateAndNotificate(newFlight);
+                if (!flightBeingChecked.getStatus().equals(newStatus)) {
+                    updateAndNotificate(newFlight);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

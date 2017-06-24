@@ -9,5 +9,24 @@
     <string name="search_text">Buscar</string>
     <string name="action_search">Buscar</string>
     <string name="notification_title">El estado de tus vuelos ha cambiado</string>
-    <string name="notification_text">Texto de notificacion</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="offers">Offers</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string-array name="notification_timer">
+        <item>Every 1 second</item>
+        <item>Every 5 minutes</item>
+        <item>Every 10 minutes</item>
+        <item>Every 30 minutes</item>
+        <item>Every 1 hour</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="language_options">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
 </resources>

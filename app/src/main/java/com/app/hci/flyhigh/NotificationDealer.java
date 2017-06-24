@@ -24,7 +24,6 @@ import static android.content.Context.ALARM_SERVICE;
  */
 
 public class NotificationDealer {
-    private static final int MY_NOTIFICATION_ID = 1;
     private AlarmManager alarmManager;
     private PendingIntent alarmNotificationReceiverPendingIntent;
     private Context context;
@@ -42,10 +41,6 @@ public class NotificationDealer {
                 SystemClock.elapsedRealtime() + interval,
                 interval,
                 alarmNotificationReceiverPendingIntent);
-            /*alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                    SystemClock.elapsedRealtime() + INTERVAL,
-                    INTERVAL,
-                    alarmNotificationReceiverPendingIntent);*/
         System.out.println("Empieza la alarma");
     }
 
