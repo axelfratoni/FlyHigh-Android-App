@@ -1,8 +1,11 @@
 package com.app.hci.flyhigh;
 
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,8 @@ import android.support.v4.app.Fragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.graphics.Color.rgb;
 
 
 /**
@@ -55,29 +60,23 @@ public class FlightFragment extends Fragment{
         }catch(Exception e){
             e.printStackTrace();
         }
-        DataManager.saveFlightInHistory(getActivity(), flight);
         super.onCreate(savedInstanceState);
-//        Button button = (Button) getActivity().findViewById(R.id.flight_info_suscriptionButton);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                try {
-//                    if (getArguments().getString(ids[13]).equals("Suscripto")) {
-//                        switchSubscriptionStatus();
-//                        DataManager.unsubscribe( getActivity(), flight);
-//                    }else{
-//                        switchSubscriptionStatus();
-//                        DataManager.subscribeToFlight( getActivity(), flight);
-//                    }
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
     }
 
-    private void switchSubscriptionStatus(){
-        getArguments().putString(ids[13], "NoSuscripto");
+    private void switchSubscriptionStatus(boolean subscribing, View view){
+        FloatingActionButton fab;
+        if(view != null)
+            fab = (FloatingActionButton)view.findViewById(R.id.flight_info_suscriptionButton);
+        else
+            fab = (FloatingActionButton) getView().findViewById(R.id.flight_info_suscriptionButton);
+        if(subscribing){
+            fab.setBackgroundTintList(ColorStateList.valueOf(rgb(7, 198, 49)));
+            fab.setImageResource(R.drawable.ic_check_black_24dp);
+        }else{
+            fab.setBackgroundTintList(ColorStateList.valueOf(rgb(255, 30, 41)));
+            fab.setImageResource(R.drawable.ic_clear_black_24dp);
+        }
 
     }
     @Override
@@ -91,12 +90,23 @@ public class FlightFragment extends Fragment{
         }
 
         final View view =  inflater.inflate(R.layout.flight_fragment, container, false);
-        Button button = (Button) view.findViewById(R.id.flight_info_suscriptionButton);
+        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.flight_info_suscriptionButton);
+        if(DataManager.isSubscribed(getActivity(), flight))
+            switchSubscriptionStatus(true, view);
+        else
+            switchSubscriptionStatus(false, view);
+
         if (button != null) {
             button.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new DataManager().subscribeFlight(view.getContext(),flight);
+                    if(!DataManager.isSubscribed(getActivity(), flight)){
+                        switchSubscriptionStatus(true, null);
+                        DataManager.subscribeToFlight(getActivity(), flight);
+                    }else{
+                        switchSubscriptionStatus(false, null);
+                        DataManager.unsubscribe(getActivity(), flight);
+                    }
                 }
             });
         }

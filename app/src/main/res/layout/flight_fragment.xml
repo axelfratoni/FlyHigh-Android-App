@@ -297,11 +297,18 @@
 
         </LinearLayout>
 
-        <Button
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/flight_info_suscriptionButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Subscribir" />
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:backgroundTint="@android:color/holo_green_light"
+            app:fabSize="mini"
+            app:rippleColor="@android:color/white"
+            app:srcCompat="?android:attr/textCheckMark" />
+
     </LinearLayout>
 
 

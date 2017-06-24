@@ -15,7 +15,7 @@ public class HistoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        new DataManager().clearSubscriptions(((MainActivity)getActivity()));
+        new DataManager().wipeSubscriptions((getActivity()));
         return inflater.inflate(R.layout.history_layout,null);
     }
 }

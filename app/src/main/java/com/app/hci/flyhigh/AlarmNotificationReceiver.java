@@ -31,7 +31,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
         Log.d("TAG", "Alarm at: " + DateFormat.getDateTimeInstance().format(new Date()));
 
         this.context = context;
-        Flight[] subscriptions = new DataManager().retrieveSubscriptionsDep(context);
+        Flight[] subscriptions = new DataManager().retrieveSubscriptions(context);
         if (subscriptions != null) {
             for (Flight f : subscriptions) {
                 new UpdateChecker(f).execute();
@@ -42,7 +42,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
 
     protected void updateAndNotificate(Flight updatedFlight) {
         //new DataManager().clearSubscriptions(context);
-        new DataManager().updateSubcription(context, updatedFlight);
+        new DataManager().updateSubscription(context, updatedFlight);
 
         Intent notificationIntent = new Intent(context, NotificationView.class);
 
