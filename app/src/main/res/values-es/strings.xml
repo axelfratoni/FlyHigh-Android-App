@@ -50,4 +50,12 @@
     <string name="news">Novedades</string>
     <string name="main_info">No estas subscrito a ningun vuelo</string>
     <string name="main_info2">No hay novedades</string>
+    <string-array name="fragment_names">
+        <item>FlyHigh</item>
+        <item>Búsqueda</item>
+        <item>Suscripciones</item>
+        <item>Ofertas</item>
+        <item>Historial</item>
+    </string-array>
+    <string name="flight_title">Vuelo %1$s</string>
 </resources>

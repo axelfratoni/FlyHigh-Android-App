@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import org.json.JSONObject;
 
 import static android.R.attr.fragment;
+import static com.app.hci.flyhigh.R.array.fragment_names;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFlightSelectedListener, OnFlightSearchedListener {
@@ -27,6 +28,15 @@ public class MainActivity extends AppCompatActivity
     String fragmentName;
     NotificationDealer notificationDealer;
     Fragment fragment;
+    String[] fragmentNames = {
+            "homeFragment",
+            "searchFragment",
+            "subscriptionFragment",
+            "offersFragment",
+            "historyFragment",
+            "flightFragment"
+    };
+
     static boolean fromNotification;
 
     @Override
@@ -69,12 +79,12 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if( fragmentName.equals("flightFragment")){
+            if( fragmentName.equals(fragmentNames[5])){
                 if(fromNotification){
                     fromNotification = false;
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     Fragment fragment = new SubscriptionsFragment();
-                    fragmentName = "subscriptionFragment";
+                    fragmentName = fragmentNames[2];
                     transaction.add(fragment, fragmentName);
                     transaction.replace(R.id.mainFrame, fragment);
                     transaction.addToBackStack(null);
@@ -82,7 +92,7 @@ public class MainActivity extends AppCompatActivity
                 }else{
                 super.onBackPressed();
                 }
-            }else if(fragmentName.equals("searchFragment") || fragmentName.equals("historyFragment") || fragmentName.equals("offersFragment") || fragmentName.equals("subscriptionFragment")){
+            }else if(fragmentName.equals(fragmentNames[1]) || fragmentName.equals(fragmentNames[2]) || fragmentName.equals(fragmentNames[3]) || fragmentName.equals(fragmentNames[4])){
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 Fragment fragment = new HomeFragment();
                 fragmentName = "homeFragment";
@@ -90,7 +100,7 @@ public class MainActivity extends AppCompatActivity
                 transaction.replace(R.id.mainFrame, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-            }else if(fragmentName.equals("homeFragment")){
+            }else if(fragmentName.equals(fragmentNames[0])){
                 finish();
             }
 
@@ -134,24 +144,29 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (id == R.id.nav_home) {
             fragment = new HomeFragment();
-            fragmentName = "homeFragment";
+            fragmentName = fragmentNames[0];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[0]);
         } else if (id == R.id.nav_suscriptions) {
             fragment = new SubscriptionsFragment();
-            fragmentName = "subscriptionFragment";
+            fragmentName = fragmentNames[2];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[2]);
         } else if (id == R.id.nav_offers) {
             fragment = new OffersFragment();
-            fragmentName = "offersFragment";
+            fragmentName = fragmentNames[3];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
-            fragmentName = "historyFragment";
+            fragmentName = fragmentNames[4];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[4]);
         } else if (id == R.id.nav_search) {
             fragment = new SearchFragment();
-            fragmentName = "searchFragment";
+            fragmentName = fragmentNames[1];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[1]);
         }
         transaction.replace(R.id.mainFrame, fragment);
         transaction.addToBackStack(null);
@@ -182,6 +197,7 @@ public class MainActivity extends AppCompatActivity
                 ((DualPane)fragment).addDetails(newFragment);
                 //transaction.replace(R.id.details, newFragment);
             } else {
+                setTitle(getString(R.string.flight_title, f.getFlightNumber()));
                 transaction.replace(R.id.mainFrame, newFragment);
             }
             transaction.addToBackStack(null);
