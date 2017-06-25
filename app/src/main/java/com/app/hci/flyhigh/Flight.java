@@ -1,9 +1,12 @@
 package com.app.hci.flyhigh;
 
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
+
+import static android.R.attr.duration;
 
 /**
  * Created by Gaston on 15/06/2017.
@@ -15,11 +18,9 @@ public class Flight {
     private String arrivalAirport;
     private String departureCity;
     private String arrivalCity;
-    private String duration;
     private ImageView airlineLogo; /// No se si lo tendria que tener el vuelo
     private String airlineName;
     private String airlineId;
-    private boolean[] days;
     private String departureHour;
     private String departureAirportName;
     private String arrivalHour;
@@ -28,25 +29,30 @@ public class Flight {
     private String status;
     private Double price;
     private String flightDate;
+    private String departureGate;
+    private String departureTerminal;
+    private String arrivalGate;
+    private String arrivalTerminal;
 
-    @Deprecated
-    public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
-        setFlightData(departureAirport, arrivalAirport, departureCity, arrivalCity, duration, airlineName, airlineId, departureHour, departureAirportName, arrivalHour, arrivalAirportName, flightNumber, status, flightDate);
+    public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate, String departureGate,String departureTerminal, String arrivalGate, String arrivalTerminal){
+        setFlightData(departureAirport, arrivalAirport, departureCity, arrivalCity, airlineName, airlineId, departureHour, departureAirportName, arrivalHour, arrivalAirportName, flightNumber, status, flightDate, departureGate,departureTerminal, arrivalGate, arrivalTerminal);
     }
-
     public Flight(JSONObject stat){
         try {
             String arrID = stat.getJSONObject("arrival").getJSONObject("airport").getJSONObject("city").getString("id");
             String arrName = stat.getJSONObject("arrival").getJSONObject("airport").getJSONObject("city").getString("name").split(",")[0];
             String depID = stat.getJSONObject("departure").getJSONObject("airport").getJSONObject("city").getString("id");
             String depName = stat.getJSONObject("departure").getJSONObject("airport").getJSONObject("city").getString("name").split(",")[0];
-            String duration = "6:66";
+            String arrGate = stat.getJSONObject("arrival").getJSONObject("airport").getString("gate");
+            String arrTerminal = stat.getJSONObject("arrival").getJSONObject("airport").getString("terminal");
+            String depGate = stat.getJSONObject("departure").getJSONObject("airport").getString("gate");
+            String depTerminal = stat.getJSONObject("departure").getJSONObject("airport").getString("terminal");
             String aeroName = stat.getJSONObject("airline").getString("name");
+            String airId = stat.getJSONObject("airline").getString("id");
             String depTime = stat.getJSONObject("departure").getString("scheduled_time").split(" ")[1];
             String arrTime = stat.getJSONObject("arrival").getString("scheduled_time").split(" ")[1];
             String depAirName = stat.getJSONObject("departure").getJSONObject("airport").getString("description").split(",")[0];
             String arrAirName = stat.getJSONObject("arrival").getJSONObject("airport").getString("description").split(",")[0];
-            String airId = stat.getJSONObject("airline").getString("id");
             String flightNum = stat.getString("number");
             String fliDate = stat.getJSONObject("departure").getString("scheduled_time").split(" ")[0];
             String status = "-";
@@ -69,7 +75,7 @@ public class Flight {
                 default:
                     new RuntimeException("Problema en el servidor");
             }
-            setFlightData(depID, arrID, depName, arrName, duration, aeroName, airId, depTime, depAirName, arrTime, arrAirName, flightNum, status, fliDate);
+            setFlightData(depID, arrID, depName, arrName, aeroName, airId, depTime, depAirName, arrTime, arrAirName, flightNum, status, fliDate, arrGate, arrTerminal, depGate, depTerminal);
             jsonRepresentation = stat;
         }catch(Exception e){
             e.printStackTrace();
@@ -87,7 +93,7 @@ public class Flight {
         return  false;
     }
 
-    private void setFlightData(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String duration, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate){
+    private void setFlightData(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate, String departureGate,String departureTerminal, String arrivalGate, String arrivalTerminal){
         this.airlineName = airlineName;
         this.airlineId = airlineId;
         this.flightNumber= flightNumber;
@@ -99,9 +105,12 @@ public class Flight {
         this.arrivalAirport = arrivalAirport;
         this.departureCity = departureCity;
         this.arrivalCity = arrivalCity;
-        this.duration = duration;
         this.departureAirportName = departureAirportName;
         this.arrivalAirportName = arrivalAirportName;
+        this.departureGate = departureGate;
+        this.departureTerminal = departureTerminal;
+        this.arrivalGate = arrivalGate;
+        this.arrivalTerminal = arrivalTerminal;
     }
 
     public String getArrivalCity() { return arrivalCity; }
@@ -130,21 +139,17 @@ public class Flight {
         return status;
     }
 
-    public String getWeekDays() {
-        return "Lunes, Martes y Miercoles";
-    }
-
-    public String getDate() { return flightDate; }
-
     public String getFlightNumber() {
         return flightNumber;
     }
 
-    public Double getPrice() {
-        return price;
-    }
+    public String getDepartureGate() { return departureGate; }
 
-    public String getDuration() { return duration; }
+    public String getDepartureTerminal() { return departureTerminal; }
+
+    public String getArrivalGate() { return arrivalGate; }
+
+    public String getArrivalTerminal() { return arrivalTerminal; }
 
     public String getDepartureCity() { return departureCity; }
 

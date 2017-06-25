@@ -51,12 +51,14 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
+
         setHolder(holder, position);
         return convertView;
     }
 
     private void setHolder(ViewHolder holder, int position) {
         Flight flight = getItem(position);
+        Log.d("xD", flight.toString());
         holder.airlineIdTextView.setText(flight.getAirlineId());
         holder.departureAirportTextView.setText(flight.getDepartureAirport());
         holder.arrivalAirportTextView.setText(flight.getArrivalAirport());
@@ -68,7 +70,6 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         holder.statusTextView.setText(flight.getStatus());
 
         String status = flight.getStatus();
-        Log.d("xD", new Integer(getContext().getResources().getColor(R.color.green)).toString());
 
         switch(status){
             case "Aterrizado":case "Programado":

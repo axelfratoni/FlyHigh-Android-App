@@ -42,6 +42,10 @@ public class FlightFragment extends Fragment{
         "arrival_airport_name",
         "flight_number",
         "subscription_status",
+        "departure_gate",
+        "departure_terminal",
+        "arrival_gate",
+        "arrival_terminal",
         "json_representation"};
 
 
@@ -152,16 +156,18 @@ public class FlightFragment extends Fragment{
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalAirportBig)).setText(args.getString(ids[1]));
         ((TextView) getActivity().findViewById(R.id.flight_info_departureCity)).setText(args.getString(ids[2]));
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCity)).setText(args.getString(ids[3]));
-        ((TextView) getActivity().findViewById(R.id.flight_info_duration)).setText(args.getString(ids[4]));
         //((ImageView) getActivity().findViewById(R.id.flight_info_airline_logo)).setImage(extras.getString(ids[5]));
         ((TextView) getActivity().findViewById(R.id.flight_info_airline)).setText(args.getString(ids[6]));
-        ((TextView) getActivity().findViewById(R.id.flight_info_weekDays)).setText(args.getString(ids[7]));
         ((TextView) getActivity().findViewById(R.id.flight_info_departureHour)).setText(args.getString(ids[8]));
-        ((TextView) getActivity().findViewById(R.id.flight_info_departureCityAndAirport)).setText(args.getString(ids[2])+ " - " + args.getString(ids[9]));
+        ((TextView) getActivity().findViewById(R.id.flight_info_departureCityAndAirport)).setText(getString(R.string.airport_city, args.getString(ids[2]), args.getString(ids[9])));
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalHour)).setText(args.getString(ids[10]));
-        ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCityAndAirport)).setText(args.getString(ids[3]) + " - " + args.getString(ids[11]));
+        ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCityAndAirport)).setText(getString(R.string.airport_city, args.getString(ids[3]) ,args.getString(ids[11])));
         ((TextView) getActivity().findViewById(R.id.flight_info_number)).setText(args.getString(ids[12]));
         ((TextView) getActivity().findViewById(R.id.flight_info_status)).setText(args.getString(ids[13]));
+        ((TextView) getActivity().findViewById(R.id.flight_info_departure_gate)).setText(getString(R.string.gate, args.getString(ids[14])));
+        ((TextView) getActivity().findViewById(R.id.flight_info_departure_terminal)).setText(getString(R.string.terminal, args.getString(ids[15])));
+        ((TextView) getActivity().findViewById(R.id.flight_info_arrival_gate)).setText(getString(R.string.gate, args.getString(ids[16])));
+        ((TextView) getActivity().findViewById(R.id.flight_info_arrival_terminal)).setText(getString(R.string.terminal, args.getString(ids[17])));
     }
 
     public void updateFlightFragment(Flight flight){
@@ -171,14 +177,16 @@ public class FlightFragment extends Fragment{
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalAirportBig)).setText(flight.getArrivalAirport());
         ((TextView) getActivity().findViewById(R.id.flight_info_departureCity)).setText(flight.getDepartureCity());
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCity)).setText(flight.getArrivalCity());
-        ((TextView) getActivity().findViewById(R.id.flight_info_duration)).setText(flight.getDuration());
+        ((TextView) getActivity().findViewById(R.id.flight_info_departure_gate)).setText(getString(R.string.gate, flight.getDepartureGate()));
+        ((TextView) getActivity().findViewById(R.id.flight_info_arrival_gate)).setText(getString(R.string.gate, flight.getArrivalGate()));
+        ((TextView) getActivity().findViewById(R.id.flight_info_departure_terminal)).setText(getString(R.string.terminal, flight.getDepartureTerminal()));
+        ((TextView) getActivity().findViewById(R.id.flight_info_arrival_terminal)).setText(getString(R.string.terminal, flight.getArrivalTerminal()));
         //((ImageView) getActivity().findViewById(R.id.flight_info_airline_logo)).setImage(extras.getString(ids[5]));
         ((TextView) getActivity().findViewById(R.id.flight_info_airline)).setText(flight.getAirlineName());
-        ((TextView) getActivity().findViewById(R.id.flight_info_weekDays)).setText(flight.getWeekDays());
         ((TextView) getActivity().findViewById(R.id.flight_info_departureHour)).setText(flight.getDepartureHour());
-        ((TextView) getActivity().findViewById(R.id.flight_info_departureCityAndAirport)).setText(flight.getDepartureCity()+ " - " + flight.getDepartureAirportName());
+        ((TextView) getActivity().findViewById(R.id.flight_info_departureCityAndAirport)).setText(getString(R.string.airport_city, flight.getDepartureCity(), flight.getDepartureAirportName()));
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalHour)).setText(flight.getArrivalHour());
-        ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCityAndAirport)).setText(flight.getArrivalCity() + " - " + flight.getArrivalAirportName());
+        ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCityAndAirport)).setText(getString(R.string.airport_city, flight.getArrivalCity() , flight.getArrivalAirportName()));
         ((TextView) getActivity().findViewById(R.id.flight_info_number)).setText(flight.getFlightNumber());
         ((TextView) getActivity().findViewById(R.id.flight_info_status)).setText(flight.getStatus());
     }
@@ -189,16 +197,20 @@ public class FlightFragment extends Fragment{
         args.putString(ids[1],flight.getArrivalAirport());
         args.putString(ids[2],flight.getDepartureCity());
         args.putString(ids[3],flight.getArrivalCity());
-        args.putString(ids[4],flight.getDuration());
+//        args.putString(ids[4],flight.getDuration());
         args.putString(ids[6],flight.getAirlineName());
-        args.putString(ids[7],flight.getWeekDays());
+//        args.putString(ids[7],flight.getWeekDays());
         args.putString(ids[8],flight.getDepartureHour());
         args.putString(ids[9],flight.getDepartureAirportName());
         args.putString(ids[10],flight.getArrivalHour());
         args.putString(ids[11],flight.getArrivalAirportName());
         args.putString(ids[12],flight.getFlightNumber());
         args.putString(ids[13],flight.getStatus());
-        args.putString(ids[14],flight.getJsonRepresentation());
+        args.putString(ids[14],flight.getDepartureGate());
+        args.putString(ids[15],flight.getDepartureTerminal());
+        args.putString(ids[16],flight.getArrivalGate());
+        args.putString(ids[17],flight.getArrivalTerminal());
+        args.putString(ids[18],flight.getJsonRepresentation());
         return args;
     }
 }

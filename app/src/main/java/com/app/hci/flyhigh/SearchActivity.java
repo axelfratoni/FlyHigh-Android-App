@@ -152,7 +152,11 @@ public class SearchActivity extends AppCompatActivity {
                     String airId = f.getJSONObject("airline").getString("id");
                     String flightNum = f.getString("number");
                     String fliDate = f.getJSONObject("departure").getString("date").split(" ")[0];
-                    result[i] = new Flight(depID, arrID, depName, arrName, duration, aeroName, airId, depTime, depAirName, arrTime, arrAirName, airId + flightNum, "Activo", fliDate);
+                    String arrGate = f.getJSONObject("arrival").getString("gate");
+                    String arrTerminal = f.getJSONObject("arrival").getString("terminal");
+                    String depGate = f.getJSONObject("departure").getString("gate");
+                    String depTerminal = f.getJSONObject("departure").getString("terminal");
+                    result[i] = new Flight(depID, arrID, depName, arrName, aeroName, airId, depTime, depAirName, arrTime, arrAirName, airId + flightNum, "Activo", fliDate, arrGate, arrTerminal, depGate, depTerminal);
                 }
 
             } catch (Exception exception) {

@@ -32,4 +32,10 @@
     <string name="flight_info_SubscribeButton">SUSCRIBIR</string>
     <string name="flight_not_found">No se encuentra ese vuelo</string>
     <string name="not_a_flight_code">"No es un codigo de vuelo"</string>
+    <string name="flight_number">Numero de vuelo</string>
+    <string name="status">Estado</string>
+    <string name="delete_history">Borrar Historial</string>
+    <string name="airport_city">%1$s - %2$s</string>
+    <string name="gate">Puerta: %1$s</string>
+    <string name="terminal">Terminal: %1$s</string>
 </resources>

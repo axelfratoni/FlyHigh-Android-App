@@ -6,11 +6,12 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Borrar Historial" />
+            android:text="@string/delete_history" />
         <ListView
             android:id="@android:id/list"
             android:layout_width="match_parent"
