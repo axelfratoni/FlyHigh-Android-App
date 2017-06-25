@@ -65,8 +65,8 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         holder.flightNumberTextView.setText(flight.getFlightNumber());
         holder.departureHourTextView.setText(flight.getDepartureHour());
         holder.arrivalHourTextView.setText(flight.getArrivalHour());
-        holder.departureCityTextView.setText(flight.getDepartureCity());
-        holder.arrivalCityTextView.setText(flight.getArrivalCity());
+        holder.departureCityTextView.setText(parseCityText(flight.getDepartureCity()));
+        holder.arrivalCityTextView.setText(parseCityText(flight.getArrivalCity()));
         holder.statusTextView.setText(flight.getStatus());
 
         String status = flight.getStatus();
@@ -90,6 +90,12 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
                 break;
         }
         holder.statusTextView.setText(status);
+    }
+    private String parseCityText(String city){
+        if(city.length() > 12){
+            return city.substring(0,9) + "...";
+        }
+        return city;
     }
 
     public class ViewHolder{
