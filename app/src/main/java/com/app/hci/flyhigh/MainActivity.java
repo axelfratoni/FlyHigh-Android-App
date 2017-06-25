@@ -186,19 +186,17 @@ public class MainActivity extends AppCompatActivity
             flightFrag.updateFlightFragment(f);
         } else {
             Log.d("Chau","Chau");
-            FlightFragment newFragment = FlightFragment.newInstance(this, f);
+            FlightFragment detailsFragment = FlightFragment.newInstance(this, f);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            fragmentName = "flightFragment";
-            fragment = newFragment;
-            transaction.add(newFragment, fragmentName);
+            String detailsFragmentName = "flightFragment";
+            transaction.add(detailsFragment, detailsFragmentName);
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
             if(((DualPane)fragment).isDualPane()) {
-                ((DualPane)fragment).addDetails(newFragment);
-                //transaction.replace(R.id.details, newFragment);
+                ((DualPane)fragment).addDetails(detailsFragment);
             } else {
                 setTitle(getString(R.string.flight_title, f.getFlightNumber()));
-                transaction.replace(R.id.mainFrame, newFragment);
+                transaction.replace(R.id.mainFrame, detailsFragment);
             }
             transaction.addToBackStack(null);
             // Commit the transaction
