@@ -88,7 +88,6 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                 if (!flightBeingChecked.getStatus().equals(newStatus)) {
                     updateAndNotificate(newFlight);
                 }
-                updateAndNotificate(newFlight);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
