@@ -210,4 +210,32 @@ public class MainActivity extends AppCompatActivity
         return notificationDealer;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if(fragmentName.equals("subscriptionFragment") || fragmentName.equals("searchFragment")) {
+
+            if(newConfig.screenWidthDp >= 600) {
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                if(fragmentName.equals("searchFragment")) {
+                    fragment = new SearchFragment();
+                    transaction.add(fragment, fragmentName);
+                } else {
+                    fragment = new SubscriptionsFragment();
+                    transaction.add(fragment, fragmentName);
+                }
+
+                transaction.replace(R.id.mainFrame, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+
+        }
+
+    }
+
 }
