@@ -60,7 +60,7 @@ public class FlightFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState){
         try {
-            this.flight = new Flight(new JSONObject(getArguments().getString(ids[14])));
+            this.flight = new Flight(new JSONObject(getArguments().getString(ids[18])));
         }catch(Exception e){
             e.printStackTrace();
         }

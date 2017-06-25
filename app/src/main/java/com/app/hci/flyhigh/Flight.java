@@ -43,10 +43,10 @@ public class Flight {
             String arrName = stat.getJSONObject("arrival").getJSONObject("airport").getJSONObject("city").getString("name").split(",")[0];
             String depID = stat.getJSONObject("departure").getJSONObject("airport").getJSONObject("city").getString("id");
             String depName = stat.getJSONObject("departure").getJSONObject("airport").getJSONObject("city").getString("name").split(",")[0];
-            String arrGate = stat.getJSONObject("arrival").getJSONObject("airport").getString("gate");
-            String arrTerminal = stat.getJSONObject("arrival").getJSONObject("airport").getString("terminal");
-            String depGate = stat.getJSONObject("departure").getJSONObject("airport").getString("gate");
-            String depTerminal = stat.getJSONObject("departure").getJSONObject("airport").getString("terminal");
+            String arrGate = checkIfNull(stat.getJSONObject("arrival").getJSONObject("airport").getString("gate"));
+            String arrTerminal = checkIfNull(stat.getJSONObject("arrival").getJSONObject("airport").getString("terminal"));
+            String depGate = checkIfNull(stat.getJSONObject("departure").getJSONObject("airport").getString("gate"));
+            String depTerminal = checkIfNull(stat.getJSONObject("departure").getJSONObject("airport").getString("terminal"));
             String aeroName = stat.getJSONObject("airline").getString("name");
             String airId = stat.getJSONObject("airline").getString("id");
             String depTime = stat.getJSONObject("departure").getString("scheduled_time").split(" ")[1];
@@ -82,7 +82,12 @@ public class Flight {
             //result = "No existe ese vuelo";
         }
     }
-
+    private String checkIfNull(String s){
+        if(s.equals("null")){
+            return " -";
+        }
+        return s;
+    }
     @Override
     public boolean equals(Object o) {
         if (o != null && Flight.class.isAssignableFrom(o.getClass())) {
