@@ -37,17 +37,10 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         Bundle extras = getIntent().getExtras();
-        Log.d("OnCreate", (extras==null)?"Null":"No es null");
         if( extras!= null){
             try{
-
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment fragment = FlightFragment.newInstance(this, new Flight(new JSONObject(getIntent().getExtras().getString("flight", "null"))));
                 fromNotification = true;
-                transaction.add(fragment, "flightFragmentFromNotification");
-                transaction.replace(R.id.mainFrame, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                onFlightSearch(new Flight(new JSONObject(getIntent().getExtras().getString("flight", "null"))));
             }catch(Exception e){
             }
         }else{
@@ -76,19 +69,32 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(getSupportFragmentManager().findFragmentByTag("flightFragmentFromNotification") != null && fromNotification){
-                fromNotification = false;
-                Log.d("Anda mierda!!!", "No anda");
+            if( fragmentName.equals("flightFragment")){
+                if(fromNotification){
+                    fromNotification = false;
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    Fragment fragment = new SubscriptionsFragment();
+                    fragmentName = "subscriptionFragment";
+                    transaction.add(fragment, fragmentName);
+                    transaction.replace(R.id.mainFrame, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }else{
+                super.onBackPressed();
+                }
+            }else if(fragmentName.equals("searchFragment") || fragmentName.equals("historyFragment") || fragmentName.equals("offersFragment") || fragmentName.equals("subscriptionFragment")){
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                Fragment fragment = new SubscriptionsFragment();
-                fragmentName = "subscriptionFragment";
+                Fragment fragment = new HomeFragment();
+                fragmentName = "homeFragment";
                 transaction.add(fragment, fragmentName);
                 transaction.replace(R.id.mainFrame, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-            }else{
-                super.onBackPressed();
+            }else if(fragmentName.equals("homeFragment")){
+                finish();
             }
+
+
         }
     }
 
@@ -167,6 +173,9 @@ public class MainActivity extends AppCompatActivity
             Log.d("Chau","Chau");
             FlightFragment newFragment = FlightFragment.newInstance(this, f);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            fragmentName = "flightFragment";
+            fragment = newFragment;
+            transaction.add(newFragment, fragmentName);
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
             if(((DualPane)fragment).isDualPane()) {
