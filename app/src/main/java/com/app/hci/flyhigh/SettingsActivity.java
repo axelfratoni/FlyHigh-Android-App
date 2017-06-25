@@ -2,10 +2,12 @@ package com.app.hci.flyhigh;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
@@ -22,6 +24,7 @@ import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
     boolean isFirstCall = true;
+    boolean isFirstCallTime = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +36,47 @@ public class SettingsActivity extends AppCompatActivity {
                         android.R.layout.simple_spinner_item);
         staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timerSpinner.setAdapter(staticAdapter);
+        switch (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("time", 1000)) {
+            case 1000: timerSpinner.setSelection(0); break;
+            case 1000 * 60 * 5: timerSpinner.setSelection(1); break;
+            case 1000 * 60 * 10: timerSpinner.setSelection(2); break;
+            case 1000 * 60 * 30: timerSpinner.setSelection(3); break;
+            case 1000 * 60 * 60: timerSpinner.setSelection(4); break;
+            case 0: timerSpinner.setSelection(5); break;
+        }
         timerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                //String option = timerSpinner.getSelectedItem().toString();
-                System.out.println(position);
+                if (!isFirstCallTime) {
+                    SharedPreferences desired = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor desiredEditor = desired.edit();
+                    switch (position) {
+                        case 0:
+                            desiredEditor.putInt("time", 1000);
+                            break;
+                        case 1:
+                            desiredEditor.putInt("time", 1000 * 60 * 5);
+                            break;
+                        case 2:
+                            desiredEditor.putInt("time", 1000 * 60 * 10);
+                            break;
+                        case 3:
+                            desiredEditor.putInt("time", 1000 * 60 * 30);
+                            break;
+                        case 4:
+                            desiredEditor.putInt("time", 1000 * 60 * 60);
+                            break;
+                        case 5:
+                            desiredEditor.putInt("time", 0);
+                            break;
+                    }
+                    desiredEditor.apply();
+                    Intent refresh = new Intent(SettingsActivity.this, MainActivity.class);
+                    startActivity(refresh);
+                }
+                isFirstCallTime = false;
             }
 
             @Override
