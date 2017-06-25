@@ -33,7 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by axel on 15/06/17.
  */
 
-public class SearchFragment extends ListFragment {
+public class SearchFragment extends ListFragment implements DualPane {
     String DATA = "HISTORIAL";
     Flight[] searchHist;
     String flyCode;
@@ -67,6 +67,16 @@ public class SearchFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         showHistory();
+    }
+
+    public boolean isDualPane() {
+        return getView().findViewById(R.id.details) != null;
+    }
+
+    public void addDetails(Fragment fragment) {
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.details, fragment)
+                .commit();
     }
 
     @Override
@@ -150,7 +160,7 @@ public class SearchFragment extends ListFragment {
 
         // When in two-pane layout, set the listview to highlight the selected list item
         // (We do this during onStart because at the point the listview is available.)
-        if (getFragmentManager().findFragmentById(R.id.flight_fragment) != null) {
+        if (isDualPane()) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }

@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,7 +27,7 @@ import static android.content.Context.ALARM_SERVICE;
  * Created by Gaston on 15/06/2017.
  */
 
-public class SubscriptionsFragment extends ListFragment {
+public class SubscriptionsFragment extends ListFragment implements DualPane {
     OnFlightSelectedListener mCallback;
     View view;
 
@@ -46,9 +47,19 @@ public class SubscriptionsFragment extends ListFragment {
 
         // When in two-pane layout, set the listview to highlight the selected list item
         // (We do this during onStart because at the point the listview is available.)
-        if (getFragmentManager().findFragmentById(R.id.flight_fragment) != null) {
+        if (isDualPane()) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
+    }
+
+    public boolean isDualPane() {
+        return getView().findViewById(R.id.details) != null;
+    }
+
+    public void addDetails(Fragment fragment) {
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.details, fragment)
+                .commit();
     }
 
     @Nullable
