@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static android.graphics.Color.rgb;
+import static com.app.hci.flyhigh.R.string.status;
 
 
 /**
@@ -165,12 +166,12 @@ public class FlightFragment extends Fragment{
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCityAndAirport)).setText(getString(R.string.airport_city, args.getString(ids[3]) ,args.getString(ids[11])));
         ((TextView) getActivity().findViewById(R.id.flight_info_number)).setText(args.getString(ids[12]));
         ((TextView) getActivity().findViewById(R.id.flight_info_status)).setText(args.getString(ids[13]));
+        setStatusColor(args.getString(ids[13]), (TextView) getActivity().findViewById(R.id.flight_info_status));
         ((TextView) getActivity().findViewById(R.id.flight_info_departure_gate)).setText(getString(R.string.gate, args.getString(ids[14])));
         ((TextView) getActivity().findViewById(R.id.flight_info_departure_terminal)).setText(getString(R.string.terminal, args.getString(ids[15])));
         ((TextView) getActivity().findViewById(R.id.flight_info_arrival_gate)).setText(getString(R.string.gate, args.getString(ids[16])));
         ((TextView) getActivity().findViewById(R.id.flight_info_arrival_terminal)).setText(getString(R.string.terminal, args.getString(ids[17])));
     }
-
     public void updateFlightFragment(Flight flight){
         ((TextView) getActivity().findViewById(R.id.flight_info_departureAirport)).setText(flight.getDepartureAirport());
         ((TextView) getActivity().findViewById(R.id.flight_info_departureAirportBig)).setText(flight.getDepartureAirport());
@@ -213,5 +214,21 @@ public class FlightFragment extends Fragment{
         args.putString(ids[17],flight.getArrivalTerminal());
         args.putString(ids[18],flight.getJsonRepresentation());
         return args;
+    }
+
+    private void setStatusColor(String status, TextView statusTextView){
+        if(status.equals(getString(R.string.stat_l)) || status.equals(getString(R.string.stat_s))) {
+            //noinspection ResourceType
+            statusTextView.setTextColor(Color.parseColor(getContext().getResources().getString(R.color.green)));
+        }else if(status.equals(getString(R.string.stat_a))) {
+            //noinspection ResourceType
+            statusTextView.setTextColor(Color.parseColor(getContext().getResources().getString(R.color.lightblue)));
+        }else if(status.equals(getString(R.string.stat_r))) {
+            //noinspection ResourceType
+            statusTextView.setTextColor(Color.parseColor(getContext().getResources().getString(R.color.orange)));
+        }else if(status.equals(getString(R.string.stat_c))) {
+            //noinspection ResourceType
+            statusTextView.setTextColor(Color.RED);
+        }
     }
 }
