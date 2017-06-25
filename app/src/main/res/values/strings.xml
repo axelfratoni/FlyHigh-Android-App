@@ -49,4 +49,13 @@
     <string name="news">News</string>
     <string name="main_info">You are not subscribed to any flight</string>
     <string name="main_info2">There are not any news</string>
+    <string-array name="fragment_names">
+        <item>FlyHigh</item>
+        <item>Search</item>
+        <item>Subscriptions</item>
+        <item>Offers</item>
+        <item>History</item>
+        <item>Flight %1$s</item>
+    </string-array>
+    <string name="flight_title">Flight %1$s</string>
 </resources>

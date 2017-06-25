@@ -17,7 +17,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
+import org.json.JSONObject;
+
 import static android.R.attr.fragment;
+import static com.app.hci.flyhigh.R.array.fragment_names;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFlightSelectedListener, OnFlightSearchedListener {
@@ -25,6 +28,16 @@ public class MainActivity extends AppCompatActivity
     String fragmentName;
     NotificationDealer notificationDealer;
     Fragment fragment;
+    String[] fragmentNames = {
+            "homeFragment",
+            "searchFragment",
+            "subscriptionFragment",
+            "offersFragment",
+            "historyFragment",
+            "flightFragment"
+    };
+
+    static boolean fromNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +46,20 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainFrame, new HomeFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-
+        Bundle extras = getIntent().getExtras();
+        if( extras!= null){
+            try{
+                fromNotification = true;
+                onFlightSearch(new Flight(new JSONObject(getIntent().getExtras().getString("flight", "null"))));
+            }catch(Exception e){
+            }
+        }else{
+            fromNotification = false;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.mainFrame, new HomeFragment());
+            //transaction.addToBackStack(null);
+            transaction.commit();
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -58,7 +79,32 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if( fragmentName.equals(fragmentNames[5])){
+                if(fromNotification){
+                    fromNotification = false;
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    Fragment fragment = new SubscriptionsFragment();
+                    fragmentName = fragmentNames[2];
+                    transaction.add(fragment, fragmentName);
+                    transaction.replace(R.id.mainFrame, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }else{
+                super.onBackPressed();
+                }
+            }else if(fragmentName.equals(fragmentNames[1]) || fragmentName.equals(fragmentNames[2]) || fragmentName.equals(fragmentNames[3]) || fragmentName.equals(fragmentNames[4])){
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Fragment fragment = new HomeFragment();
+                fragmentName = "homeFragment";
+                transaction.add(fragment, fragmentName);
+                transaction.replace(R.id.mainFrame, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }else if(fragmentName.equals(fragmentNames[0])){
+                finish();
+            }
+
+
         }
     }
 
@@ -98,24 +144,29 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (id == R.id.nav_home) {
             fragment = new HomeFragment();
-            fragmentName = "homeFragment";
+            fragmentName = fragmentNames[0];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[0]);
         } else if (id == R.id.nav_suscriptions) {
             fragment = new SubscriptionsFragment();
-            fragmentName = "subscriptionFragment";
+            fragmentName = fragmentNames[2];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[2]);
         } else if (id == R.id.nav_offers) {
             fragment = new OffersFragment();
-            fragmentName = "offersFragment";
+            fragmentName = fragmentNames[3];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
-            fragmentName = "historyFragment";
+            fragmentName = fragmentNames[4];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[4]);
         } else if (id == R.id.nav_search) {
             fragment = new SearchFragment();
-            fragmentName = "searchFragment";
+            fragmentName = fragmentNames[1];
             transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[1]);
         }
         transaction.replace(R.id.mainFrame, fragment);
         transaction.addToBackStack(null);
@@ -137,12 +188,16 @@ public class MainActivity extends AppCompatActivity
             Log.d("Chau","Chau");
             FlightFragment newFragment = FlightFragment.newInstance(this, f);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            fragmentName = "flightFragment";
+            fragment = newFragment;
+            transaction.add(newFragment, fragmentName);
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
             if(((DualPane)fragment).isDualPane()) {
                 ((DualPane)fragment).addDetails(newFragment);
                 //transaction.replace(R.id.details, newFragment);
             } else {
+                setTitle(getString(R.string.flight_title, f.getFlightNumber()));
                 transaction.replace(R.id.mainFrame, newFragment);
             }
             transaction.addToBackStack(null);
