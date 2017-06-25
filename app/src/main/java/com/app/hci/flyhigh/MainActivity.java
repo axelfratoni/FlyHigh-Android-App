@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     FragmentManager mFragmentManager;
     String fragmentName;
     NotificationDealer notificationDealer;
+    Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             return true;
         }
-        Fragment fragment = null;
+        fragment = null;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (id == R.id.nav_home) {
             fragment = new HomeFragment();
@@ -138,9 +139,13 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
-            transaction.replace(R.id.mainFrame, newFragment);
+            if(((DualPane)fragment).isDualPane()) {
+                ((DualPane)fragment).addDetails(newFragment);
+                //transaction.replace(R.id.details, newFragment);
+            } else {
+                transaction.replace(R.id.mainFrame, newFragment);
+            }
             transaction.addToBackStack(null);
-
             // Commit the transaction
             transaction.commit();
         }
