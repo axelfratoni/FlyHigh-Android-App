@@ -10,9 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
-        android:layout_columnSpan="2"
+        android:layout_columnWeight="2"
+        android:layout_gravity="left"
         android:layout_row="0"
-        android:layout_weight="1"
+        android:layout_rowSpan="2"
         android:text="LOGO" />
 
     <TextView
@@ -20,9 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_columnWeight="1"
+        android:layout_columnWeight="3"
         android:layout_row="0"
-        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="EZE"
         android:textAlignment="center"
         android:textSize="18sp"
@@ -41,11 +42,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="3"
-        android:layout_columnWeight="1"
+        android:layout_columnWeight="3"
         android:layout_row="0"
-        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="JFK"
-        android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -54,9 +54,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="4"
+        android:layout_columnWeight="2"
+        android:layout_gravity="right"
         android:layout_row="0"
         android:text="4657"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         android:textSize="18sp" />
 
     <TextView
@@ -64,9 +67,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_columnWeight="1"
+        android:layout_columnWeight="3"
         android:layout_row="1"
-        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="07.00"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -77,11 +80,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="3"
-        android:layout_columnWeight="1"
+        android:layout_columnWeight="3"
         android:layout_row="1"
-        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="21.00"
-        android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="12sp" />
 
@@ -90,6 +92,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="0"
+        android:layout_columnWeight="2"
+        android:layout_gravity="left"
         android:layout_row="2"
         android:text="AERO"
         android:textStyle="bold" />
@@ -99,10 +103,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:layout_columnWeight="1"
+        android:layout_columnWeight="3"
         android:layout_row="2"
-        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="Buenos Aires"
+        android:scrollHorizontally="true"
+        android:maxLength="12"
         android:textAlignment="center"
         android:textSize="12sp" />
 
@@ -111,11 +117,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="3"
-        android:layout_columnWeight="1"
+        android:layout_columnWeight="3"
         android:layout_row="2"
-        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="Nueva York"
-        android:textAlignment="center"
+        android:scrollHorizontally="true"
+        android:maxLength="12"
         android:textSize="12sp" />
 
     <TextView
@@ -123,6 +130,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="4"
+        android:layout_columnWeight="2"
+        android:layout_gravity="right"
         android:layout_row="2"
         android:text="Volando" />
 
