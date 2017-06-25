@@ -17,7 +17,7 @@
     <string name="notifications">Notificaciones</string>
     <string name="home">Inicio</string>
     <string name="search">Búsqueda</string>
-    <string name="subscriptions">Subscripciones</string>
+    <string name="subscriptions">Suscripciones</string>
     <string name="offers">Ofertas</string>
     <string name="history">Historial</string>
     <string name="settings">Opciones</string>
@@ -48,7 +48,7 @@
     <string name="stat_l">Aterrizado</string>
     <string name="stat_c">Cancelado</string>
     <string name="news">Novedades</string>
-    <string name="main_info">No estas subscrito a ningun vuelo</string>
+    <string name="main_info">No estas suscrito a ningun vuelo</string>
     <string name="main_info2">No hay novedades</string>
     <string-array name="fragment_names">
         <item>FlyHigh</item>

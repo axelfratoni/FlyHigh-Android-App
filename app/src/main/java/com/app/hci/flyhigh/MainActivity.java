@@ -157,12 +157,7 @@ public class MainActivity extends AppCompatActivity
             fragmentName = fragmentNames[3];
             transaction.add(fragment, fragmentName);
             setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
-        } else if (id == R.id.nav_history) {
-            fragment = new HistoryFragment();
-            fragmentName = fragmentNames[4];
-            transaction.add(fragment, fragmentName);
-            setTitle(getResources().getStringArray(R.array.fragment_names)[4]);
-        } else if (id == R.id.nav_search) {
+        }  else if (id == R.id.nav_search) {
             fragment = new SearchFragment();
             fragmentName = fragmentNames[1];
             transaction.add(fragment, fragmentName);

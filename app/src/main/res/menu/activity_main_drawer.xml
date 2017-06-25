@@ -20,10 +20,6 @@
             android:id="@+id/nav_offers"
             android:icon="@drawable/ic_local_offer_black_24dp"
             android:title="@string/offers" />
-        <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/ic_history_black_24dp"
-            android:title="@string/history" />
     </group>
 
     <group
