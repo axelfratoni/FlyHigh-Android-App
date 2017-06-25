@@ -17,6 +17,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
+import org.json.JSONObject;
+
 import static android.R.attr.fragment;
 
 public class MainActivity extends AppCompatActivity
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity
     String fragmentName;
     NotificationDealer notificationDealer;
     Fragment fragment;
+    static boolean fromNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +36,27 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainFrame, new HomeFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        Bundle extras = getIntent().getExtras();
+        Log.d("OnCreate", (extras==null)?"Null":"No es null");
+        if( extras!= null){
+            try{
 
-
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Fragment fragment = FlightFragment.newInstance(this, new Flight(new JSONObject(getIntent().getExtras().getString("flight", "null"))));
+                fromNotification = true;
+                transaction.add(fragment, "flightFragmentFromNotification");
+                transaction.replace(R.id.mainFrame, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }catch(Exception e){
+            }
+        }else{
+            fromNotification = false;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.mainFrame, new HomeFragment());
+            //transaction.addToBackStack(null);
+            transaction.commit();
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -58,7 +76,19 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(getSupportFragmentManager().findFragmentByTag("flightFragmentFromNotification") != null && fromNotification){
+                fromNotification = false;
+                Log.d("Anda mierda!!!", "No anda");
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Fragment fragment = new SubscriptionsFragment();
+                fragmentName = "subscriptionFragment";
+                transaction.add(fragment, fragmentName);
+                transaction.replace(R.id.mainFrame, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }else{
+                super.onBackPressed();
+            }
         }
     }
 

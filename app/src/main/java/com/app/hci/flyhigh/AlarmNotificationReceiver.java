@@ -44,10 +44,11 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
         //new DataManager().clearSubscriptions(context);
         new DataManager().updateSubscription(context, updatedFlight);
 
-        Intent notificationIntent = new Intent(context, NotificationView.class);
-
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent.putExtra("isFromNotification", "true");
+        notificationIntent.putExtra("flight", updatedFlight.getJsonRepresentation());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(NotificationView.class);
+        stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(notificationIntent);
 
         final PendingIntent contentIntent =
