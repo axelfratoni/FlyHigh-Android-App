@@ -47,4 +47,7 @@
     <string name="stat_r">Desviado</string>
     <string name="stat_l">Aterrizado</string>
     <string name="stat_c">Cancelado</string>
+    <string name="news">Novedades</string>
+    <string name="main_info">No estas subscrito a ningun vuelo</string>
+    <string name="main_info2">No hay novedades</string>
 </resources>

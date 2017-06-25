@@ -46,4 +46,7 @@
     <string name="stat_r">Detoured</string>
     <string name="stat_l">Landed</string>
     <string name="stat_c">Cancelled</string>
+    <string name="news">News</string>
+    <string name="main_info">You are not subscribed to any flight</string>
+    <string name="main_info2">There are not any news</string>
 </resources>
