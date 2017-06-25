@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FlyHigh</string>
+
+    <string name="actual_lang">"es</string>
+    <string name="navigation_drawer_open">Abrir navegador de opciones</string>
+    <string name="navigation_drawer_close">Cerrar navegador de opciones</string>
+    <string name="action_settings">Opciones</string>
+    <string name="load_data">Cargar información</string>
+    <string name="error">Error</string>
+    <string name="search_text">Buscar</string>
+    <string name="action_search">Buscar</string>
+    <string name="notification_title">El estado de tus vuelos ha cambiado</string>
+    <string name="notification_data1">"El vuelo "</string>
+    <string name="notification_data2">" ha cambiado a estado "</string>
+    <string name="language">Lenguaje</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="home">Inicio</string>
+    <string name="search">Búsqueda</string>
+    <string name="subscriptions">Subscripciones</string>
+    <string name="offers">Ofertas</string>
+    <string name="history">Historial</string>
+    <string name="settings">Opciones</string>
+    <string-array name="notification_timer">
+        <item>Cada 1 segundo</item>
+        <item>Cada 5 minutos</item>
+        <item>Cada 10 minutos</item>
+        <item>Cada 30 minutos</item>
+        <item>Cada 1 hora</item>
+        <item>Nunca</item>
+    </string-array>
+    <string-array name="language_options">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
+    <string name="flight_info_SubscribeButton">SUSCRIBIR</string>
+    <string name="flight_not_found">No se encuentra ese vuelo</string>
+    <string name="not_a_flight_code">"No es un código de vuelo"</string>
+    <string name="flight_number">Número de vuelo</string>
+    <string name="status">Estado</string>
+    <string name="delete_history">Limpiar Historial</string>
+    <string name="airport_city">%1$s - %2$s</string>
+    <string name="gate">Puerta: <b>%1$s</b></string>
+    <string name="terminal">Terminal: <b>%1$s</b></string>
+    <string name="stat_s">Programado</string>
+    <string name="stat_a">Activo</string>
+    <string name="stat_r">Desviado</string>
+    <string name="stat_l">Aterrizado</string>
+    <string name="stat_c">Cancelado</string>
+</resources>

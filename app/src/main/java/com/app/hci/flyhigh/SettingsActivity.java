@@ -1,17 +1,27 @@
 package com.app.hci.flyhigh;
 
+import android.app.Application;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import java.util.Locale;
 
 /**
  * Created by axel on 23/06/17.
  */
 
 public class SettingsActivity extends AppCompatActivity {
+    boolean isFirstCall = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +55,20 @@ public class SettingsActivity extends AppCompatActivity {
                         android.R.layout.simple_spinner_item);
         langAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         languageSpinner.setAdapter(langAdapter);
+        switch (getString(R.string.actual_lang)) {
+            case "es": languageSpinner.setSelection(0); break;
+            case "en": languageSpinner.setSelection(1); break;
+        }
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                //String option = timerSpinner.getSelectedItem().toString();
-                System.out.println(position);
+                switch (position) {
+                    case 0: setLocale("es"); break;
+                    case 1: setLocale("en"); break;
+                    default:;
+                }
             }
 
             @Override
@@ -63,4 +80,20 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    public void setLocale(String lang) {
+        /*LocaleUtils.setLocale(new Locale(lang));
+        LocaleUtils.updateConfig(this, getBaseContext().getResources().getConfiguration());*/
+        System.out.println(isFirstCall);
+        if (!isFirstCall) {
+            Locale myLocale = new Locale(lang);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+            Intent refresh = new Intent(this, MainActivity.class);
+            startActivity(refresh);
+        }
+        isFirstCall = false;
+    }
 }

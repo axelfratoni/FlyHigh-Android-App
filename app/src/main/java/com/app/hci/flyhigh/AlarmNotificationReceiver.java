@@ -55,9 +55,9 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
 
         Notification notification = new Notification.Builder(context)
                 .setContentTitle(context.getResources().getString(R.string.notification_title))
-                .setContentText("El vuelo " + updatedFlight.getAirlineId() + "-" + updatedFlight.getFlightNumber() + " ha cambiado a estado " + updatedFlight.getStatus())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setContentText(context.getResources().getString(R.string.notification_data1) + updatedFlight.getAirlineId() + "-" + updatedFlight.getFlightNumber() + context.getResources().getString(R.string.notification_data2) + updatedFlight.getStatus())
+                .setSmallIcon(R.mipmap.ic_flyhigh_logo)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_flyhigh_logo))
                 .setAutoCancel(true)
                 .setContentIntent(contentIntent).build();
 
@@ -88,6 +88,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                 if (!flightBeingChecked.getStatus().equals(newStatus)) {
                     updateAndNotificate(newFlight);
                 }
+                updateAndNotificate(newFlight);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
