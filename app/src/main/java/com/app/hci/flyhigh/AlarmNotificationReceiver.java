@@ -55,7 +55,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
 
         Notification notification = new Notification.Builder(context)
                 .setContentTitle(context.getResources().getString(R.string.notification_title))
-                .setContentText(context.getResources().getString(R.string.notification_data1) + updatedFlight.getAirlineId() + "-" + updatedFlight.getFlightNumber() + context.getResources().getString(R.string.notification_data2) + updatedFlight.getStatus())
+                .setContentText(context.getResources().getString(R.string.notification_data1) + updatedFlight.getAirlineId() + "-" + updatedFlight.getFlightNumber() + context.getResources().getString(R.string.notification_data2) + updatedFlight.getStatus(context))
                 .setSmallIcon(R.mipmap.ic_flyhigh_logo)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_flyhigh_logo))
                 .setAutoCancel(true)
@@ -84,8 +84,8 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                 System.out.println("http://hci.it.itba.edu.ar/v1/api/status.groovy?method=getflightstatus&airline_id="+ flightBeingChecked.getAirlineId() +"&flight_number="+ flightBeingChecked.getFlightNumber());
                 JSONObject newJsonFlight = new JSONObject(newJson).getJSONObject("status");
                 Flight newFlight = new Flight(newJsonFlight);
-                String newStatus = newFlight.getStatus();
-                if (!flightBeingChecked.getStatus().equals(newStatus)) {
+                String newStatus = newFlight.getStatusBasic();
+                if (!flightBeingChecked.getStatusBasic().equals(newStatus)) {
                     updateAndNotificate(newFlight);
                 }
             } catch (JSONException e) {

@@ -1,5 +1,6 @@
 package com.app.hci.flyhigh;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -49,8 +50,8 @@ public class FlightFragment extends Fragment{
         "json_representation"};
 
 
-    public static FlightFragment newInstance(Flight flight) {
-        Bundle args = prepareBundle(flight);
+    public static FlightFragment newInstance(Context context, Flight flight) {
+        Bundle args = prepareBundle(context, flight);
         FlightFragment fragment = new FlightFragment();
 
         fragment.setArguments(args);
@@ -188,10 +189,10 @@ public class FlightFragment extends Fragment{
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalHour)).setText(flight.getArrivalHour());
         ((TextView) getActivity().findViewById(R.id.flight_info_arrivalCityAndAirport)).setText(getString(R.string.airport_city, flight.getArrivalCity() , flight.getArrivalAirportName()));
         ((TextView) getActivity().findViewById(R.id.flight_info_number)).setText(flight.getFlightNumber());
-        ((TextView) getActivity().findViewById(R.id.flight_info_status)).setText(flight.getStatus());
+        ((TextView) getActivity().findViewById(R.id.flight_info_status)).setText(flight.getStatus(getContext()));
     }
 
-    private static Bundle prepareBundle(Flight flight){
+    private static Bundle prepareBundle(Context context, Flight flight){
         Bundle args = new Bundle();
         args.putString(ids[0],flight.getDepartureAirport());
         args.putString(ids[1],flight.getArrivalAirport());
@@ -205,7 +206,7 @@ public class FlightFragment extends Fragment{
         args.putString(ids[10],flight.getArrivalHour());
         args.putString(ids[11],flight.getArrivalAirportName());
         args.putString(ids[12],flight.getFlightNumber());
-        args.putString(ids[13],flight.getStatus());
+        args.putString(ids[13],flight.getStatus(context));
         args.putString(ids[14],flight.getDepartureGate());
         args.putString(ids[15],flight.getDepartureTerminal());
         args.putString(ids[16],flight.getArrivalGate());

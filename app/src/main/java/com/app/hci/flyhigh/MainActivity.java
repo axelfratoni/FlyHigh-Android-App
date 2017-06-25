@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             flightFrag.updateFlightFragment(f);
         } else {
             Log.d("Chau","Chau");
-            FlightFragment newFragment = FlightFragment.newInstance(f);
+            FlightFragment newFragment = FlightFragment.newInstance(this, f);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back

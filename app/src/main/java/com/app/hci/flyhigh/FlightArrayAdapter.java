@@ -2,6 +2,7 @@ package com.app.hci.flyhigh;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.drm.ProcessedData;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
@@ -67,29 +68,29 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         holder.arrivalHourTextView.setText(flight.getArrivalHour());
         holder.departureCityTextView.setText(parseCityText(flight.getDepartureCity()));
         holder.arrivalCityTextView.setText(parseCityText(flight.getArrivalCity()));
-        holder.statusTextView.setText(flight.getStatus());
+        holder.statusTextView.setText(flight.getStatus(getContext()));
 
-        String status = flight.getStatus();
+        String status = flight.getStatusBasic();
 
         switch(status){
-            case "Aterrizado":case "Programado":
+            case "L":case "S":
                 //noinspection ResourceType
                 holder.statusTextView.setTextColor(Color.parseColor(getContext().getResources().getString(R.color.green)));
                 break;
-            case "Activo":
+            case "A":
                 //noinspection ResourceType
                 holder.statusTextView.setTextColor(Color.parseColor(getContext().getResources().getString(R.color.lightblue)));
                 break;
-            case "Desviado":
+            case "R":
                 //noinspection ResourceType
                 holder.statusTextView.setTextColor(Color.parseColor(getContext().getResources().getString(R.color.orange)));
                 break;
-            case "Cancelado":
+            case "C":
                 //noinspection ResourceType
                 holder.statusTextView.setTextColor(Color.RED);
                 break;
         }
-        holder.statusTextView.setText(status);
+        holder.statusTextView.setText(flight.getStatus(getContext()));
     }
     private String parseCityText(String city){
         if(city.length() > 12){

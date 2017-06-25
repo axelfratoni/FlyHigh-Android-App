@@ -1,5 +1,6 @@
 package com.app.hci.flyhigh;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,26 +56,7 @@ public class Flight {
             String arrAirName = stat.getJSONObject("arrival").getJSONObject("airport").getString("description").split(",")[0];
             String flightNum = stat.getString("number");
             String fliDate = stat.getJSONObject("departure").getString("scheduled_time").split(" ")[0];
-            String status = "-";
-            switch (stat.getString("status")) {
-                case "S":
-                    status = "Programado";
-                    break;
-                case "A":
-                    status = "Activo";
-                    break;
-                case "R":
-                    status = "Desviado";
-                    break;
-                case "L":
-                    status = "Aterrizado";
-                    break;
-                case "C":
-                    status = "Cancelado";
-                    break;
-                default:
-                    new RuntimeException("Problema en el servidor");
-            }
+            String status = stat.getString("status");
             setFlightData(depID, arrID, depName, arrName, aeroName, airId, depTime, depAirName, arrTime, arrAirName, flightNum, status, fliDate, arrGate, arrTerminal, depGate, depTerminal);
             jsonRepresentation = stat;
         }catch(Exception e){
@@ -140,8 +122,30 @@ public class Flight {
 
     public String getArrivalAirport(){ return arrivalAirport; }
 
-    public String getStatus() {
-        return status;
+    public String getStatusBasic() { return status;}
+
+    public String getStatus(Context context) {
+        String stat = "";
+        switch (status) {
+            case "S":
+                stat = context.getResources().getString(R.string.stat_s);
+                break;
+            case "A":
+                stat = context.getResources().getString(R.string.stat_a);
+                break;
+            case "R":
+                stat = context.getResources().getString(R.string.stat_r);
+                break;
+            case "L":
+                stat = context.getResources().getString(R.string.stat_l);
+                break;
+            case "C":
+                stat = context.getResources().getString(R.string.stat_c);
+                break;
+            default:
+                new RuntimeException("Problema en el servidor");
+        }
+        return stat;
     }
 
     public String getFlightNumber() {
