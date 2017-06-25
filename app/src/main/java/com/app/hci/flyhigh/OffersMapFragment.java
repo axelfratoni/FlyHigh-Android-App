@@ -9,10 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,8 +18,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 /**
  * Created by leo on 23/06/17.
@@ -35,16 +30,11 @@ public class OffersMapFragment extends Fragment implements OnMapReadyCallback {
 
     SupportMapFragment mapFragment;
 
-    private static View view;
+    View view;
+
+    //List<Offer> offers;
 
     public OffersMapFragment() {
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
 
     }
 
@@ -57,6 +47,7 @@ public class OffersMapFragment extends Fragment implements OnMapReadyCallback {
             if (parent != null)
                 parent.removeView(view);
         }
+
         try {
             view = inflater.inflate(R.layout.offersmapfragment_layout, container, false);
 
@@ -78,77 +69,52 @@ public class OffersMapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        addMarkersFrom("BUE");
+        addMarkers();
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(-34.6, -58.38)));  //bsas
 
     }
 
-    private void addMarkersFrom(String origin) {
+    private void addMarkers() {
 
-        String  url = "http://hci.it.itba.edu.ar/v1/api/booking.groovy?method=getflightdeals&from=" + origin;
+        List<Offer> offers = ((OffersFragment)OffersMapFragment.this.getParentFragment()).getOffers();
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        for(int i = 0 ; i < offers.size() ; i++) {
 
-            @Override
-            public void onResponse(JSONObject response) {
+            String name = offers.get(i).getName();
+            double longitude = offers.get(i).getLongitude();
+            double latitude = offers.get(i).getLatitude();
+            double price = offers.get(i).getPrice();
 
-            try {
+            MarkerOptions m = new MarkerOptions();
 
-                for(int i=0 ; i < response.getJSONArray("deals").length() ; i++) {
-                    
-                    String name = (response.getJSONArray("deals").getJSONObject(i)).getJSONObject("city").getString("name");
-                    double longitude = (response.getJSONArray("deals").getJSONObject(i)).getJSONObject("city").getDouble("longitude");
-                    double latitude = (response.getJSONArray("deals").getJSONObject(i)).getJSONObject("city").getDouble("latitude");
-                    double price = (response.getJSONArray("deals").getJSONObject(i)).getDouble("price");
+            LatLng latlng = new LatLng(latitude, longitude);
 
-                    MarkerOptions m = new MarkerOptions();
+            BitmapDescriptor icon = null;
 
-                    LatLng position = new LatLng(latitude, longitude);
+            if(price < 500.0){
 
-                    BitmapDescriptor icon = null;
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
 
-                    if(price < 500.0){
+            }else if (price > 500.00 && price < 1000.00){
 
-                        icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
 
-                    }else if (price > 500.00 && price < 1000.00){
+            }else{
 
-                        icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
-
-                    }else{
-
-                        icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
-
-                    }
-
-                    m.position(position);
-
-                    m.icon(icon);
-
-                    m.title(name.split(",")[0] + " $" + price);
-
-                    mMap.addMarker(m);
-
-                }
-
-            } catch (JSONException e) {
-
-                Log.e("Error", e.toString());
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
 
             }
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+            m.position(latlng);
 
-                Log.e("Error", "");
+            m.icon(icon);
 
-            }
-        });
+            m.title(name.split(",")[0] + " $" + price);
 
-        VolleyRequester.getInstance(getActivity()).addToRequestQueue(jsObjRequest);
+            mMap.addMarker(m);
+
+        }
 
     }
 
