@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity
         return notificationDealer;
     }
 
-    @Override
+    /*@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
@@ -267,6 +267,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-    }
+    }*/
 
 }
