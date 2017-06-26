@@ -3,7 +3,10 @@ package com.app.hci.flyhigh;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,11 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static android.graphics.Color.rgb;
 import static com.app.hci.flyhigh.R.string.status;
@@ -117,6 +126,7 @@ public class FlightFragment extends Fragment{
                 }
             });
         }
+        new LoadImage(flight.getLogURL(), (ImageView) view.findViewById(R.id.image_view)).execute();
 
         return view;
     }
@@ -229,6 +239,37 @@ public class FlightFragment extends Fragment{
         }else if(status.equals(getString(R.string.stat_c))) {
             //noinspection ResourceType
             statusTextView.setTextColor(Color.RED);
+        }
+    }
+
+    public class LoadImage extends AsyncTask<String, Void, Bitmap> {
+        private String targetURL;
+        private ImageView imageView;
+
+        public LoadImage (String url, ImageView imageView) {
+            this.targetURL = url;
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            try {
+                HttpURLConnection urlConnection = null;
+                URL url = new URL(targetURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                return BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            if (result != null) {
+                imageView.setImageBitmap(result);
+            }
         }
     }
 }

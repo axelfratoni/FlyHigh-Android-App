@@ -1,6 +1,8 @@
 package com.app.hci.flyhigh;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ public class Flight {
     private String departureTerminal;
     private String arrivalGate;
     private String arrivalTerminal;
+    private Bitmap logo;
 
     public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate, String departureGate,String departureTerminal, String arrivalGate, String arrivalTerminal){
         setFlightData(departureAirport, arrivalAirport, departureCity, arrivalCity, airlineName, airlineId, departureHour, departureAirportName, arrivalHour, arrivalAirportName, flightNumber, status, flightDate, departureGate,departureTerminal, arrivalGate, arrivalTerminal, "asd");
@@ -167,4 +170,5 @@ public class Flight {
     public String getDepartureCity() { return departureCity; }
 
     public String getJsonRepresentation(){ return jsonRepresentation.toString(); }
+
 }
