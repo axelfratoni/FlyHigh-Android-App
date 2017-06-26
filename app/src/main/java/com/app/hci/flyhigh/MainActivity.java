@@ -91,12 +91,16 @@ public class MainActivity extends AppCompatActivity
                     transaction.commit();
                     setTitle(getResources().getStringArray(R.array.fragment_names)[2]);
                 }else{
-                    if(fragment instanceof SubscriptionsFragment)
+                    if(fragment instanceof SubscriptionsFragment){
                         setTitle(getResources().getStringArray(R.array.fragment_names)[2]);
-                    else if(fragment instanceof SearchFragment)
+                        fragmentName = fragmentNames[2];
+                    }else if(fragment instanceof SearchFragment){
                         setTitle(getResources().getStringArray(R.array.fragment_names)[1]);
-                    else if(fragment instanceof OffersFragment)
+                        fragmentName = fragmentNames[1];
+                    }else if(fragment instanceof OffersFragment){
                         setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
+                        fragmentName = fragmentNames[3];
+                    }
                     super.onBackPressed();
                 }
             }else if(fragmentName.equals(fragmentNames[1]) || fragmentName.equals(fragmentNames[2]) || fragmentName.equals(fragmentNames[3]) || fragmentName.equals(fragmentNames[4])){
