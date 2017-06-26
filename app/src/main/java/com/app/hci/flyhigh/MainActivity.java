@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import org.json.JSONObject;
 
 import static android.R.attr.fragment;
+import static android.R.attr.switchMinWidth;
 import static com.app.hci.flyhigh.R.array.fragment_names;
 
 public class MainActivity extends AppCompatActivity
@@ -89,7 +90,14 @@ public class MainActivity extends AppCompatActivity
                     transaction.replace(R.id.mainFrame, fragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
+                    setTitle(getResources().getStringArray(R.array.fragment_names)[2]);
                 }else{
+                    if(fragment instanceof SubscriptionsFragment)
+                        setTitle(getResources().getStringArray(R.array.fragment_names)[2]);
+                    else if(fragment instanceof SearchFragment)
+                        setTitle(getResources().getStringArray(R.array.fragment_names)[1]);
+                    else if(fragment instanceof OffersFragment)
+                        setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
                     super.onBackPressed();
                 }
             }else if(fragmentName.equals(fragmentNames[1]) || fragmentName.equals(fragmentNames[2]) || fragmentName.equals(fragmentNames[3]) || fragmentName.equals(fragmentNames[4])){
@@ -100,6 +108,7 @@ public class MainActivity extends AppCompatActivity
                 transaction.replace(R.id.mainFrame, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+                setTitle(getResources().getStringArray(R.array.fragment_names)[0]);
             }else if(fragmentName.equals(fragmentNames[0])){
                 finish();
             }
@@ -121,10 +130,12 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }*/
 
@@ -155,6 +166,11 @@ public class MainActivity extends AppCompatActivity
             fragmentName = fragmentNames[3];
             transaction.add(fragment, fragmentName);
             setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
+        } else if (id == R.id.nav_history) {
+            fragment = new HistoryFragment();
+            fragmentName = fragmentNames[4];
+            transaction.add(fragment, fragmentName);
+            setTitle(getResources().getStringArray(R.array.fragment_names)[4]);
         } else if (id == R.id.nav_search) {
             fragment = new SearchFragment();
             fragmentName = fragmentNames[1];
@@ -189,6 +205,7 @@ public class MainActivity extends AppCompatActivity
                 ((DualPane)fragment).addDetails(detailsFragment);
             } else {
                 setTitle(getString(R.string.flight_title, f.getFlightNumber()));
+                fragmentName = fragmentNames[5];
                 transaction.replace(R.id.mainFrame, detailsFragment);
             }
             transaction.addToBackStack(null);
