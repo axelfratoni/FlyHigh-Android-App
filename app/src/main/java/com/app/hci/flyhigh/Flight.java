@@ -19,7 +19,7 @@ public class Flight {
     private String arrivalAirport;
     private String departureCity;
     private String arrivalCity;
-    private ImageView airlineLogo; /// No se si lo tendria que tener el vuelo
+    private String logURL;
     private String airlineName;
     private String airlineId;
     private String departureHour;
@@ -36,7 +36,7 @@ public class Flight {
     private String arrivalTerminal;
 
     public Flight(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate, String departureGate,String departureTerminal, String arrivalGate, String arrivalTerminal){
-        setFlightData(departureAirport, arrivalAirport, departureCity, arrivalCity, airlineName, airlineId, departureHour, departureAirportName, arrivalHour, arrivalAirportName, flightNumber, status, flightDate, departureGate,departureTerminal, arrivalGate, arrivalTerminal);
+        setFlightData(departureAirport, arrivalAirport, departureCity, arrivalCity, airlineName, airlineId, departureHour, departureAirportName, arrivalHour, arrivalAirportName, flightNumber, status, flightDate, departureGate,departureTerminal, arrivalGate, arrivalTerminal, "asd");
     }
     public Flight(JSONObject stat){
         try {
@@ -57,7 +57,8 @@ public class Flight {
             String flightNum = stat.getString("number");
             String fliDate = stat.getJSONObject("departure").getString("scheduled_time").split(" ")[0];
             String status = stat.getString("status");
-            setFlightData(depID, arrID, depName, arrName, aeroName, airId, depTime, depAirName, arrTime, arrAirName, flightNum, status, fliDate, arrGate, arrTerminal, depGate, depTerminal);
+            String logoURL = stat.getJSONObject("airline").getString("logo");
+            setFlightData(depID, arrID, depName, arrName, aeroName, airId, depTime, depAirName, arrTime, arrAirName, flightNum, status, fliDate, arrGate, arrTerminal, depGate, depTerminal, logoURL);
             jsonRepresentation = stat;
         }catch(Exception e){
             e.printStackTrace();
@@ -80,7 +81,7 @@ public class Flight {
         return  false;
     }
 
-    private void setFlightData(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate, String departureGate,String departureTerminal, String arrivalGate, String arrivalTerminal){
+    private void setFlightData(String departureAirport, String arrivalAirport, String departureCity, String arrivalCity, String airlineName, String airlineId, String departureHour, String departureAirportName, String arrivalHour, String arrivalAirportName, String flightNumber, String status, String flightDate, String departureGate,String departureTerminal, String arrivalGate, String arrivalTerminal, String logoURL){
         this.airlineName = airlineName;
         this.airlineId = airlineId;
         this.flightNumber= flightNumber;
@@ -98,6 +99,7 @@ public class Flight {
         this.departureTerminal = departureTerminal;
         this.arrivalGate = arrivalGate;
         this.arrivalTerminal = arrivalTerminal;
+        this.logURL = logoURL;
     }
 
     public String getArrivalCity() { return arrivalCity; }
@@ -123,6 +125,8 @@ public class Flight {
     public String getArrivalAirport(){ return arrivalAirport; }
 
     public String getStatusBasic() { return status;}
+
+    public String getLogURL() {return logURL;}
 
     public String getStatus(Context context) {
         String stat = "";

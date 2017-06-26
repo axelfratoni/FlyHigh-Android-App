@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }else{
-                super.onBackPressed();
+                    super.onBackPressed();
                 }
             }else if(fragmentName.equals(fragmentNames[1]) || fragmentName.equals(fragmentNames[2]) || fragmentName.equals(fragmentNames[3]) || fragmentName.equals(fragmentNames[4])){
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -121,12 +121,10 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }*/
 
@@ -157,7 +155,7 @@ public class MainActivity extends AppCompatActivity
             fragmentName = fragmentNames[3];
             transaction.add(fragment, fragmentName);
             setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
-        }  else if (id == R.id.nav_search) {
+        } else if (id == R.id.nav_search) {
             fragment = new SearchFragment();
             fragmentName = fragmentNames[1];
             transaction.add(fragment, fragmentName);

@@ -2,9 +2,13 @@ package com.app.hci.flyhigh;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.drm.ProcessedData;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import static android.graphics.Color.rgb;
+import static com.app.hci.flyhigh.R.id.imageView;
 
 /**
  * Created by Gaston on 15/06/2017.
@@ -54,6 +65,7 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         }
 
         setHolder(holder, position);
+        new LoadImage(getItem(position).getLogURL(), (ImageView) convertView.findViewById(R.id.image_view)).execute();
         return convertView;
     }
 
@@ -109,5 +121,36 @@ public class FlightArrayAdapter extends ArrayAdapter<Flight> {
         public TextView departureCityTextView;
         public TextView arrivalCityTextView;
         public TextView statusTextView;
+    }
+
+    public class LoadImage extends AsyncTask<String, Void, Bitmap> {
+        private String targetURL;
+        private ImageView imageView;
+
+        public LoadImage (String url, ImageView imageView) {
+            this.targetURL = url;
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            try {
+                HttpURLConnection urlConnection = null;
+                URL url = new URL(targetURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                return BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            if (result != null) {
+                imageView.setImageBitmap(result);
+            }
+        }
     }
 }

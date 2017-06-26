@@ -5,16 +5,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/LOGO"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_columnWeight="2"
-        android:layout_gravity="left"
-        android:layout_row="0"
-        android:layout_rowSpan="2"
-        android:text="LOGO" />
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/load_image"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/flight_departureAirport"
