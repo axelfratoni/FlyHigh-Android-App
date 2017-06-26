@@ -40,6 +40,8 @@ public class NotificationDealer {
         setInterval();
         System.out.println("Intervalo de alarma: " + interval);
         System.out.println("Notification is Set?: " + isSet());
+        startNotifications();
+        Log.v("testapp", "Empezando las notificaciones");
     }
 
     public void startNotifications() {
