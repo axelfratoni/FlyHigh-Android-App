@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity
             "searchFragment",
             "subscriptionFragment",
             "offersFragment",
-            "historyFragment",
             "flightFragment"
     };
 
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if( fragmentName.equals(fragmentNames[5])){
+            if( fragmentName.equals(fragmentNames[4])){
                 if(fromNotification){
                     fromNotification = false;
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -166,11 +165,6 @@ public class MainActivity extends AppCompatActivity
             fragmentName = fragmentNames[3];
             transaction.add(fragment, fragmentName);
             setTitle(getResources().getStringArray(R.array.fragment_names)[3]);
-        } else if (id == R.id.nav_history) {
-            fragment = new HistoryFragment();
-            fragmentName = fragmentNames[4];
-            transaction.add(fragment, fragmentName);
-            setTitle(getResources().getStringArray(R.array.fragment_names)[4]);
         } else if (id == R.id.nav_search) {
             fragment = new SearchFragment();
             fragmentName = fragmentNames[1];
@@ -205,7 +199,7 @@ public class MainActivity extends AppCompatActivity
                 ((DualPane)fragment).addDetails(detailsFragment);
             } else {
                 setTitle(getString(R.string.flight_title, f.getFlightNumber()));
-                fragmentName = fragmentNames[5];
+                fragmentName = fragmentNames[4];
                 transaction.replace(R.id.mainFrame, detailsFragment);
             }
             transaction.addToBackStack(null);

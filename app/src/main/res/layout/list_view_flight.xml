@@ -10,7 +10,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_below="@+id/load_image"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_columnWeight="2" />
 
     <TextView
         android:id="@+id/flight_departureAirport"
@@ -89,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_columnWeight="2"
-        android:layout_gravity="left"
+        android:layout_gravity="center_horizontal"
         android:layout_row="2"
         android:text="AERO"
         android:textStyle="bold" />
